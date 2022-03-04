@@ -4,6 +4,7 @@
  *
  */
 import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,8 +15,11 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import HomeScreen from '../screens/HomeScreen';
+import EditScreen from '../screens/EditScreen';
+import PdfScreen from '../screens/PdfScreen';
+import UserScreen from '../screens/UserScreen';
+import CalendarScreen from '../screens/CalendarScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -57,17 +61,43 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: "black",
+        tabBarInactiveBackgroundColor: "#3a5140",
+        tabBarActiveBackgroundColor: "#6e9979",
       }}>
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
+       <BottomTab.Screen
+        name="User"
+        component={UserScreen}
+        options={{
+          tabBarLabel:() => {return null},
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="user" size={24} color="#f1f2f3" />
+          ),
+        }}
+      />
+       <BottomTab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          tabBarLabel:() => {return null},
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="calendar" size={24} color="#f1f2f3" />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          tabBarLabel:() => {return null},
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="home" size={24} color="#f1f2f3" />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -84,13 +114,26 @@ function BottomTabNavigator() {
           ),
         })}
       />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+       <BottomTab.Screen
+        name="Edit"
+        component={EditScreen}
         options={{
-          title: 'Tab Two',
+          tabBarLabel:() => {return null},
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="edit" size={24} color="#f1f2f3" />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Pdf"
+        component={PdfScreen}
+        options={{
+          tabBarLabel:() => {return null},
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="pdffile1" size={24} color="#f1f2f3" />
+          ),
         }}
       />
     </BottomTab.Navigator>
