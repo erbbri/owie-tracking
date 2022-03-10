@@ -22,7 +22,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           Calendar: {
             screens: {
-              CalenarScreen: 'calendar',
+              CalendarScreen: 'calendar',
             },
           },
           Home: {
@@ -30,6 +30,7 @@ const linking: LinkingOptions<RootStackParamList> = {
               HomeScreen: 'home',
             },
           },
+
           Edit: {
             screens: {
               EditScreen: 'edit',
