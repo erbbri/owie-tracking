@@ -9,7 +9,7 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
     <SafeAreaView style={styles.container}>
       <View
         style={{
-          backgroundColor: "#aad5b5",
+          backgroundColor: "#3a5140",
           width: "100%",
           height: "10%",
           justifyContent: 'space-around',
@@ -17,9 +17,6 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
         }}>
         <View style={styles.header}>
           <Text style={styles.title}>OwieTracking</Text>
-        </View>
-        <View style={styles.header}>
-          <Button color="#3a5140" title="Menu" onPress={() => console.log("Menu pressed")} />
         </View>
       </View>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 35,
     fontWeight: 'bold',
-    color: "#3a5140",
+    color: "#f1f2f3",
   },
   separator: {
     marginVertical: 30,
@@ -45,7 +42,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: "#aad5b5",
+    backgroundColor: "#3a5140",
     justifyContent:'center',
   }
 });
