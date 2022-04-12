@@ -4,28 +4,20 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-
-export default function PdfScreen({ navigation }: RootTabScreenProps<'Pdf'>) {
-
-  const colorScheme = useColorScheme();
-
+export default function AddScreen() {
   return (
-    <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
+    <SafeAreaView style={styles.container}>
       <View
         style={{
-          backgroundColor: Colors[colorScheme].tabIconDefault,
+          backgroundColor: "#3a5140",
           width: "100%",
           height: "10%",
           justifyContent: 'space-around',
           flexDirection: 'row',
         }}>
-        <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
-          <Text style={styles.title}>OwieTracking</Text>
-        </View>
       </View>
-      <EditScreenInfo path="/screens/PdfScreen.tsx" />
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <EditScreenInfo path="/screens/AddScreen.tsx" />
     </SafeAreaView>
   );
 }

@@ -45,6 +45,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       Modal: 'modal',
       NotFound: '*',
+      Create: 'add'
     },
   },
 };

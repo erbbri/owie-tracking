@@ -1,25 +1,46 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Pressable} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
+import { AntDesign } from '@expo/vector-icons'; 
+
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
+  const colorScheme = useColorScheme();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <View
         style={{
-          backgroundColor: "#3a5140",
+          backgroundColor: Colors[colorScheme].tabIconDefault,
           width: "100%",
           height: "10%",
           justifyContent: 'space-around',
           flexDirection: 'row',
         }}>
-        <View style={styles.header}>
+        <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
           <Text style={styles.title}>OwieTracking</Text>
         </View>
       </View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+
+      <View style={styles.bottom}>
+        <Pressable
+              onPress={() => navigation.navigate('Create')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <AntDesign
+                name="pluscircle"
+                size={40}
+                color={"#3a5140"}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+            </View>
       <EditScreenInfo path="/screens/EditScreen.tsx" />
     </SafeAreaView>
   );
@@ -34,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     color: "#f1f2f3",
+    alignSelf: 'center',
   },
   separator: {
     marginVertical: 30,
@@ -42,7 +64,13 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: "#3a5140",
+    width: '100%',
     justifyContent:'center',
+  },
+
+  bottom: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'flex-end',
   }
 });
