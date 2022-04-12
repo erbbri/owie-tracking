@@ -10,7 +10,7 @@ export default function useDatabase() {
     async function loadDataAsync() {
       try {
         //possibly don't need to drop database
-        //await database.dropDatabaseTablesAsync()
+        await database.dropDatabaseTablesAsync()
         await database.setupDatabaseAsync()
         await database.setupTrackersAsync()
 

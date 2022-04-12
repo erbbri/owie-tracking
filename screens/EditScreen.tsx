@@ -8,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import { colors } from 'react-native-elements';
 
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   const colorScheme = useColorScheme();
@@ -36,7 +37,7 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
               <AntDesign
                 name="pluscircle"
                 size={40}
-                color={"#3a5140"}
+                color= {Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>

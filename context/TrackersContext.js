@@ -18,9 +18,9 @@ export const TrackersContextProvider = props => {
     refreshTrackers()
   }, [] )
 
-  const addNewTracker = trackerName => {
+  const addNewTracker = (trackerName, trackerType) => {
     //insert tracker into database and refresh context
-    return database.insertTracker(trackerName, refreshTrackers)
+    return database.insertTracker(trackerName, trackerType, refreshTrackers)
   };
 
   const refreshTrackers = () =>  {
