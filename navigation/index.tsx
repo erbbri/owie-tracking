@@ -20,15 +20,20 @@ import EditScreen from '../screens/EditScreen';
 import PdfScreen from '../screens/PdfScreen';
 import UserScreen from '../screens/UserScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import AddScreen from '../screens/AddScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import {TrackersContextProvider} from '../context/TrackersContext'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}>
-      <RootNavigator />
-    </NavigationContainer>
+      //provide context to all screens
+      <TrackersContextProvider>
+      <NavigationContainer
+        linking={LinkingConfiguration}>
+        <RootNavigator />
+      </NavigationContainer>
+      </TrackersContextProvider>
   );
 }
 
@@ -45,6 +50,7 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="Create" component={AddScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -64,8 +70,8 @@ function BottomTabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: "black",
-        tabBarInactiveBackgroundColor: "#3a5140",
-        tabBarActiveBackgroundColor: "#6e9979",
+        tabBarInactiveBackgroundColor: Colors[colorScheme].tabIconDefault,
+        tabBarActiveBackgroundColor: Colors[colorScheme].tabIconSelected,
       }}>
        <BottomTab.Screen
         name="User"
