@@ -7,10 +7,19 @@ import { RootTabScreenProps } from '../types';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
+import React, { useContext } from 'react';
+import { HistoryContext } from '../context/HistoryContext';
+
+
 export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   
   const colorScheme = useColorScheme();
 
+  //use context
+  const { entries } = useContext(HistoryContext);
+
+  //checks that entries is defined (it is)
+  if (typeof entries !== 'undefined'){
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <View
@@ -25,9 +34,17 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
           <Text style={styles.title}>OwieTracking</Text>
         </View>
       </View>
+      <View>
+      <Text>History: </Text>
+      { console.log(entries) }
+      {entries.map((entry) => (
+        <Text key={entry.id}>{entry.trackerID} : {entry.trackerType}, {entry.date}, {entry.checked}, {entry.scale}, {entry.input}</Text>
+      ))}
+      </View>
       <EditScreenInfo path="/screens/CalendarScreen.tsx" />
     </SafeAreaView>
   );
+  } return null; 
 }
 
 const styles = StyleSheet.create({

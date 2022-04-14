@@ -1,13 +1,12 @@
 import { StyleSheet, SafeAreaView, Platform, StatusBar} from 'react-native';
 import { Button, TextInput } from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import { BottomNavigation, Modal, RadioButton } from 'react-native-paper';
 import { Formik } from 'formik';
 
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import React, {useState, useContext} from 'react';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -15,7 +14,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { TrackersContext } from '../context/TrackersContext';
 
 
-export default function AddScreen() {
+export default function AddScreen({ navigation }) {
 
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
@@ -23,15 +22,23 @@ export default function AddScreen() {
   const { trackers, addNewTracker } = trackersContext;
 
   const insertTracker = (name, type) => {
-    addNewTracker(name, type)
+    addNewTracker(name, type); 
+    goBack(); 
   }
+
+  const goBack = () => {
+
+    navigation.navigate('Root', { screen: 'Edit' }); 
+    console.log('go back'); 
+  }
+
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
         initialValues={{ name: '', type: '' }}
-        onSubmit={values => addNewTracker(values.name, values.type)}
+        onSubmit={values => insertTracker(values.name, values.type)}
       >
 
         {({ handleChange, handleBlur, handleSubmit, values }) => (

@@ -1,4 +1,5 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Pressable} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Pressable, Modal} from 'react-native';
+import React, { useState } from 'react';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -10,8 +11,11 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { colors } from 'react-native-elements';
 
+
+
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   const colorScheme = useColorScheme();
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>

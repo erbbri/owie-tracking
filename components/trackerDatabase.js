@@ -34,7 +34,7 @@ const insertTracker = (trackerName, trackerType, successFunc) => {
 }
 
 //drop database - i think deletes database??
-const dropDatabaseTablesAsync = async () => {
+const dropTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -49,15 +49,15 @@ const dropDatabaseTablesAsync = async () => {
 }
 
 //set up database if one doesn't already exist
-const setupDatabaseAsync = async () => {
+const setupTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
           'create table if not exists trackers (id integer primary key not null, name text, type text);'
         );
       },
-      (_, error) => { console.log("db error creating tables"); console.log(error); reject(error) },
-      (_, success) => { console.log("db success creating tables"); resolve(success)}
+      (_, error) => { console.log("db error creating tracker tables"); console.log(error); reject(error) },
+      (_, success) => { console.log("db success creating tracker tables"); resolve(success)}
     )
   })
 }
@@ -74,10 +74,10 @@ const setupTrackersAsync = async () => {
   })
 }
 
-export const database = {
+export const trackerDatabase = {
   getTrackers,
   insertTracker,
-  setupDatabaseAsync,
+  setupTrackersDatabaseAsync,
   setupTrackersAsync,
-  dropDatabaseTablesAsync,
+  dropTrackersDatabaseAsync,
 }

@@ -24,16 +24,20 @@ import AddScreen from '../screens/AddScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {TrackersContextProvider} from '../context/TrackersContext'
+import { HistoryContextProvider } from '../context/HistoryContext';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+
   return (
       //provide context to all screens
+      <HistoryContextProvider>
       <TrackersContextProvider>
       <NavigationContainer
         linking={LinkingConfiguration}>
         <RootNavigator />
       </NavigationContainer>
       </TrackersContextProvider>
+      </HistoryContextProvider>
   );
 }
 

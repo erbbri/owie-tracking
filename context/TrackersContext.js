@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, useState } from 'react';
-import {database} from '../components/database'
+import { trackerDatabase } from '../components/trackerDatabase';
 
 export const TrackersContext = createContext({});
 
@@ -20,12 +20,12 @@ export const TrackersContextProvider = props => {
 
   const addNewTracker = (trackerName, trackerType) => {
     //insert tracker into database and refresh context
-    return database.insertTracker(trackerName, trackerType, refreshTrackers)
+    return trackerDatabase.insertTracker(trackerName, trackerType, refreshTrackers)
   };
 
   const refreshTrackers = () =>  {
     //get trackers and set them in useState trackers
-    return database.getTrackers(setTrackers)
+    return trackerDatabase.getTrackers(setTrackers)
   }
 
   // Make the context object:
