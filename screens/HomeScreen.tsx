@@ -1,5 +1,5 @@
 import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, ScrollView} from 'react-native';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import 'react-native-gesture-handler'
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -45,10 +45,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       { console.log(trackers) }
       {trackers.map((tracker) => (
         //<Text key={tracker.id}>{tracker.name} : {tracker.type}</Text>
-        
+      // <Swipeable>
         <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
           color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></RenderTracker>
-      
+      // </Swipeable>
       ))}
       </ScrollView>
 

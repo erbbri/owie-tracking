@@ -43,46 +43,47 @@ export default function AddScreen({ navigation }) {
       >
 
         {({ handleChange, handleBlur, handleSubmit, values}) => (
-        <View>
-          <Text>Tracker Name</Text>
+        <View style={{paddingTop: 10}}>
+          <Text style={styles.text}>Tracker Name</Text>
           <TextInput
-            style = {{backgroundColor: "Colors[colorScheme].items"}}
+            style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
             onChangeText={handleChange('name')}
             onBlur={handleBlur('name')}
             value={values.name}
           />
-          <View>
+          <View style={{paddingTop: 20, paddingBottom: 10}}>
            <RadioButton.Group              
                      onValueChange={handleChange('type')}
                      value={values.type}
+                     
                      >
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                       <RadioButton key={1} value='checkbox'></RadioButton>
-                       <Text>Checkbox</Text>
+                       <RadioButton key={1} value='checkbox' color= {Colors[colorScheme].radioButton}></RadioButton>
+                       <Text style={styles.text}>Checkbox</Text>
                    </View>
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                       <RadioButton key={2} value='slider'></RadioButton>
-                       <Text>Slider</Text>
+                       <RadioButton key={2} value='slider' color= {Colors[colorScheme].radioButton}></RadioButton>
+                       <Text style={styles.text}>Slider</Text>
                    </View>
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                       <RadioButton key={3} value='text'></RadioButton>
-                       <Text>Text</Text>
+                       <RadioButton key={3} value='text' color= {Colors[colorScheme].radioButton}></RadioButton>
+                       <Text style={styles.text}>Text</Text>
                    </View>
                </RadioButton.Group>
                </View>
               {values.type == "slider" && [
-              <View>
-                <Text>Min: </Text>
+              <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
+                <Text style={styles.text}>Min: </Text>
                 <TextInput
-                style = {{backgroundColor: Colors[colorScheme].items}}
+                style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText, marginRight: 10}}
                 key = {4}
                 onChangeText={handleChange('min')}
                 onBlur={handleBlur('min')}
                 value={values.min}
                 />
-                <Text>Max: </Text>
+                <Text style={styles.text}>Max: </Text>
                 <TextInput
-                style = {{backgroundColor: Colors[colorScheme].items}}
+                style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
                 key = {5}
                 onChangeText={handleChange('max')}
                 onBlur={handleBlur('max')}
@@ -95,7 +96,7 @@ export default function AddScreen({ navigation }) {
         title="Submit" 
         color={Colors[colorScheme].tabIconDefault}
         />
-        <Text>{JSON.stringify(values, 0, 2)}</Text>
+       {/*} <Text>{JSON.stringify(values, 0, 2)}</Text>*/}
         </View>
         )}
       </Formik>
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
 
-  form: {
-    
+  text: {
+    fontSize: 20,
   }
 });

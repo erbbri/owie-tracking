@@ -27,6 +27,7 @@ export default class RenderTracker extends Component {
       <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
       <View style={{marginLeft: '2%'}}></View>
       <Checkbox
+        color={'#3a5140'}
         status={this.state.isSelected}
         onPress={() => this.setChecked(this.state.isSelected)
         }

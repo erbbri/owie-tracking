@@ -11,6 +11,9 @@ export default {
     tabIconSelected: tintColorLight,
     items: '#f1f2f3',
     itemtext: '#3a5140',
+    radioButton: '#3a5140',
+    inputBackground: '#f1f2f3',
+    inputText: '#3a5140', 
   },
   dark: {
     text: '#f1f2f3',
@@ -18,7 +21,10 @@ export default {
     tint: tintColorDark,
     tabIconDefault: '#6e9979',
     tabIconSelected: tintColorDark,
-    items: '#f1f2f3',
-    itemtext: '#3a5140'
-  },
+    items: '#d6d9db',
+    itemtext: '#3a5140',
+    radioButton: '#aad5b5',
+    inputBackground: '#4d6b54',
+    inputText: '#f1f2f3',
+  }
 };
