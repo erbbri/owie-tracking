@@ -16,7 +16,7 @@ export default function App() {
   const isHistoryDBLoadidngComplete = useHistoryDatabase(); 
   const colorScheme = useColorScheme();
 
-  if (!isLoadingComplete && isTrackersDBLoadingComplete && isHistoryDBLoadidngComplete) {
+  if (!isLoadingComplete && !isTrackersDBLoadingComplete && !isHistoryDBLoadidngComplete) {
     return null;
   } else {
     return (

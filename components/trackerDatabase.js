@@ -23,9 +23,9 @@ const getTrackers = (setTrackerFunc) => {
 }
 
 //add new tracker
-const insertTracker = (trackerName, trackerType, successFunc) => {
+const insertTracker = (trackerName, trackerType, sliderMin, sliderMax, successFunc) => {
   db.transaction( tx => {
-      tx.executeSql( 'insert into trackers (name, type) values (?,?)', [trackerName, trackerType] );
+      tx.executeSql( 'insert into trackers (name, type, slidermin, slidermax) values (?,?,?,?)', [trackerName, trackerType, sliderMin, sliderMax] );
     },
     (t, error) => { console.log("db error insertTracker"); console.log(error);},
     //if inserting is a success, run function (for refreshTrackers in context)
@@ -33,7 +33,7 @@ const insertTracker = (trackerName, trackerType, successFunc) => {
   )
 }
 
-//drop database - i think deletes database??
+//drop database
 const dropTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
@@ -53,7 +53,7 @@ const setupTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
-          'create table if not exists trackers (id integer primary key not null, name text, type text);'
+          'create table if not exists trackers (id integer primary key not null, name text, type text, slidermin integer, slidermax integer);'
         );
       },
       (_, error) => { console.log("db error creating tracker tables"); console.log(error); reject(error) },
@@ -66,7 +66,7 @@ const setupTrackersDatabaseAsync = async () => {
 const setupTrackersAsync = async () => {
   return new Promise((resolve, _reject) => {
     db.transaction( tx => {
-        tx.executeSql( 'insert into trackers (id, name, type) values (?,?,?)', [1, "take meds", "checkbox"] );
+        tx.executeSql( 'insert into trackers (id, name, type, slidermin, slidermax) values (?,?,?,?,?)', [1, "take meds", "checkbox", 0, 0] );
       },
       (t, error) => { console.log("db error insertTracker"); console.log(error); resolve() },
       (t, success) => { console.log("db success insertTracker"); resolve(success)}

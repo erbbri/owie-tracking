@@ -1,5 +1,5 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button} from 'react-native';
-
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, ScrollView} from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -9,12 +9,20 @@ import React, { useContext } from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
+import RenderTracker from '../components/RenderTracker';
+
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
   const colorScheme = useColorScheme();
   
   //use context
   const { trackers } = useContext(TrackersContext);
+
+  const RightSwipeAction = () => {
+    return(
+      null
+    )
+  }
 
   //checks that trackers is defined (it is)
   if (typeof trackers !== 'undefined'){
@@ -32,13 +40,18 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
            <Text style={styles.title}>OwieTracking</Text>
           </View>
         </View>
-       <View>
-      <Text>Here is our list of trackers</Text>
+  
+       <ScrollView style={{flex: 1, marginBottom: 6}}>
       { console.log(trackers) }
       {trackers.map((tracker) => (
-        <Text key={tracker.id}>{tracker.name} : {tracker.type}</Text>
+        //<Text key={tracker.id}>{tracker.name} : {tracker.type}</Text>
+        
+        <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
+          color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></RenderTracker>
+      
       ))}
-      </View>
+      </ScrollView>
+
       <EditScreenInfo path="/screens/HomeScreen.tsx" />
     </SafeAreaView>
   );
@@ -49,6 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0, 
+    height: '100%',
   },
   title: {
     fontSize: 35,
