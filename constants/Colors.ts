@@ -26,5 +26,9 @@ export default {
     radioButton: '#aad5b5',
     inputBackground: '#4d6b54',
     inputText: '#f1f2f3',
+    switchColorOff: '#767577',
+    switchColorOn: '#6e9979', 
+    switchThumbOff: '#f1f2f3',
+    switchThumbOn: '#aad5b5', 
   }
 };

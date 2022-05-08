@@ -33,6 +33,28 @@ const insertTracker = (trackerName, trackerType, sliderMin, sliderMax, successFu
   )
 }
 
+//delete tracker
+const deleteTracker = (trackerName) => {
+  db.transaction( tx => {
+      tx.executeSql( 'delete from trackers where name = (?)', [trackerName] );
+    },
+    (t, error) => { console.log("db error deleteTracker"); console.log(error);},
+    //if inserting is a success, run function (for refreshTrackers in context)
+    (t, success) => { console.log("deleted tracker") }
+  )
+}
+
+//edit tracker name
+const editTrackerName = (newName, trackerName) => {
+  db.transaction ( tx=> {
+    tx.executeSql('update trackers set name = (?) where name = (?)', [newName, trackerName] ); 
+  },
+  (t, error) => { console.log("db error editTracker"); console.log(error);},
+  //if inserting is a success, run function (for refreshTrackers in context)
+  (t, success) => { console.log("changed tracker name") }
+  )
+}
+
 //drop database
 const dropTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
@@ -77,7 +99,9 @@ const setupTrackersAsync = async () => {
 export const trackerDatabase = {
   getTrackers,
   insertTracker,
+  deleteTracker,
   setupTrackersDatabaseAsync,
   setupTrackersAsync,
   dropTrackersDatabaseAsync,
+  editTrackerName, 
 }

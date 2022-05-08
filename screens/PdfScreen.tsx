@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Image} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -13,7 +13,8 @@ export default function PdfScreen({ navigation }: RootTabScreenProps<'Pdf'>) {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
-      <View
+     <Text style={[styles.title, {color: Colors[colorScheme].text}]}> Export To PDF</Text>
+      {/*<View
         style={{
           backgroundColor: Colors[colorScheme].tabIconDefault,
           width: "100%",
@@ -22,9 +23,14 @@ export default function PdfScreen({ navigation }: RootTabScreenProps<'Pdf'>) {
           flexDirection: 'row',
         }}>
         <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
+          <Image 
+              source={require('../assets/images/owietracking-logo.png')}
+              resizeMode={'contain'}
+              style={[styles.logo]}
+            />
           <Text style={styles.title}>OwieTracking</Text>
         </View>
-      </View>
+      </View> */}
       <EditScreenInfo path="/screens/PdfScreen.tsx" />
     </SafeAreaView>
   );
@@ -36,17 +42,22 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   title: {
-    fontSize: 35,
+    alignSelf: 'center',
+    fontSize: 25,
     fontWeight: 'bold',
-    color: "#f1f2f3",
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
   },
-
+  logo: {
+    width: 45, 
+    height: 45
+  },
   header: {
+    paddingTop: 25, 
+    flexDirection: "row",
     backgroundColor: "#3a5140",
     justifyContent:'center',
   }

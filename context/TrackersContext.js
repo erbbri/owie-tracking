@@ -23,15 +23,29 @@ export const TrackersContextProvider = props => {
     return trackerDatabase.insertTracker(trackerName, trackerType, sliderMin, sliderMax, refreshTrackers)
   };
 
+  const removeTracker = (trackerName) => {
+    //insert tracker into database and refresh context
+    return trackerDatabase.deleteTracker(trackerName)
+  };
+
+  const editName = (newName, trackerName) => {
+    //edit tracker name
+    return trackerDatabase.editTrackerName(newName, trackerName)
+  }
+
   const refreshTrackers = () =>  {
     //get trackers and set them in useState trackers
     return trackerDatabase.getTrackers(setTrackers)
+    console.log('trackers refreshed')
   }
 
   // Make the context object:
   const trackersContext = {
     trackers,
-    addNewTracker
+    addNewTracker, 
+    removeTracker,
+    refreshTrackers, 
+    editName, 
   };
 
   // pass the value in provider and return

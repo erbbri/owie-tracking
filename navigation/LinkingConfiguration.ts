@@ -36,7 +36,7 @@ const linking: LinkingOptions<RootStackParamList> = {
               EditScreen: 'edit',
             },
           },
-          Pdf: {
+           Pdf: {
             screens: {
               PdfScreen: 'pdf',
             },

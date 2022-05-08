@@ -1,27 +1,35 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch} from 'react-native';
 import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton } from 'react-native-paper';
 import { Formik, Field } from 'formik';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import { Text, View } from '../components/Themed';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
 import { TrackersContext } from '../context/TrackersContext';
+import { NotificationsContext } from '../context/NotificationsContext'
+
 
 
 export default function AddScreen({ navigation }) {
 
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
+  const notificationsContext = useContext(NotificationsContext)
 
   const { trackers, addNewTracker } = trackersContext;
+  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
   const testMin = 0; 
   const testMax = 10; 
+//For Date/Time Picker
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
 
   const insertTracker = (name, type, min, max) => {
     addNewTracker(name, type, parseInt(min), parseInt(max)); 
@@ -34,11 +42,14 @@ export default function AddScreen({ navigation }) {
     console.log('go back'); 
   }
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
-        initialValues={{ name: '', type: '', min: '0', max: '0'}}
+        initialValues={{ name: '', type: '', min: '0', max: '0', switch: false}}
         onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
       >
 
@@ -90,7 +101,25 @@ export default function AddScreen({ navigation }) {
                 value={values.max}
                 />
               </View>
-            ]}
+              ]}
+            {/*  <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
+                <Switch 
+                  trackColor={{ false: Colors[colorScheme].switchColorOff, Colors[colorScheme].switchColorOn  }}
+                  thumbColor={isEnabled ? Colors[colorScheme].switchThumbOn : Colors[colorScheme].switchThumbOff}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+                <Text style={styles.text}>Add Notification</Text>
+              </View>
+            */}
+          
+        <Button
+        title="Send Notification"
+        onPress={async () => {
+          await sendPushNotification(expoPushToken);
+        }}
+        />
         <Button 
         onPress={handleSubmit} 
         title="Submit" 

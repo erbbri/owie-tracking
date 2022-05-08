@@ -10,7 +10,7 @@ export default function useTrackersDatabase() {
     async function loadDataAsync() {
       try {
         //possibly don't need to drop database
-       // await trackerDatabase.dropTrackersDatabaseAsync()
+        //await trackerDatabase.dropTrackersDatabaseAsync()
         await trackerDatabase.setupTrackersDatabaseAsync()
         await trackerDatabase.setupTrackersAsync()
 
