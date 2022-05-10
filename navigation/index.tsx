@@ -24,16 +24,23 @@ import AddScreen from '../screens/AddScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import {TrackersContextProvider} from '../context/TrackersContext'
+import { HistoryContextProvider } from '../context/HistoryContext';
+import { NotificationsContextProvider } from '../context/NotificationsContext';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+
   return (
       //provide context to all screens
+      <NotificationsContextProvider>
+      <HistoryContextProvider>
       <TrackersContextProvider>
       <NavigationContainer
         linking={LinkingConfiguration}>
         <RootNavigator />
       </NavigationContainer>
       </TrackersContextProvider>
+      </HistoryContextProvider>
+      </NotificationsContextProvider>
   );
 }
 
@@ -51,6 +58,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="Create" component={AddScreen} />
+        <Stack.Screen name="Pdf" component={PdfScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -131,7 +139,7 @@ function BottomTabNavigator() {
           ),
         }}
       />
-      <BottomTab.Screen
+     {/*<BottomTab.Screen
         name="Pdf"
         component={PdfScreen}
         options={{
@@ -140,8 +148,8 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="pdffile1" size={24} color="#f1f2f3" />
           ),
-        }}
-      />
+       }} 
+      /> */} 
     </BottomTab.Navigator>
   );
 }

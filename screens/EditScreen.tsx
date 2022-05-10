@@ -1,4 +1,5 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Pressable} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, Image, StatusBar, Button, Pressable, Modal, ScrollView} from 'react-native';
+import React, { useState, useContext } from 'react';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -10,9 +11,24 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import { colors } from 'react-native-elements';
 
+import { TrackersContext } from '../context/TrackersContext';
+import EditTracker from '../components/EditTracker';
+
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   const colorScheme = useColorScheme();
+  const [modalVisible, setModalVisible] = useState(false);
 
+  //use context
+  const { trackers, removeTracker, refreshTrackers } = useContext(TrackersContext);
+
+  const remove =(trackerName)=> {
+    console.log('refreshing trackers'); 
+    removeTracker(trackerName); 
+    refreshTrackers; 
+  }
+
+
+  if (typeof trackers !== 'undefined'){
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <View
@@ -24,10 +40,25 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
           flexDirection: 'row',
         }}>
         <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
+          <Image 
+            source={require('../assets/images/owietracking-logo.png')}
+            resizeMode={'contain'}
+            style={[styles.logo]}
+          />
           <Text style={styles.title}>OwieTracking</Text>
         </View>
       </View>
 
+      <ScrollView style={{flex: 1, marginBottom: 6}}>
+        <Text style={styles.editTitle}>Edit Trackers</Text>
+      { console.log(trackers) }
+      {trackers.map((tracker) => (
+        <View>
+        <EditTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name}
+          color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></EditTracker>
+        </View>
+      ))}
+      </ScrollView>
       <View style={styles.bottom}>
         <Pressable
               onPress={() => navigation.navigate('Create')}
@@ -45,7 +76,9 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
       <EditScreenInfo path="/screens/EditScreen.tsx" />
     </SafeAreaView>
   );
+  } return null; 
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -53,18 +86,23 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   title: {
+    paddingLeft: 10, 
     fontSize: 35,
     fontWeight: 'bold',
     color: "#f1f2f3",
-    alignSelf: 'center',
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
   },
-
+  logo: {
+    width: 45, 
+    height: 45
+  },
   header: {
+    paddingTop: 25, 
+    flexDirection: "row",
     width: '100%',
     justifyContent:'center',
   },
@@ -73,5 +111,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'flex-end',
+  },
+  editTitle: {
+    alignSelf: 'center', 
+    fontSize: 30
   }
 });
