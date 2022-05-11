@@ -15,23 +15,7 @@ export default function UserScreen() {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
-    <View
-      style={{
-        backgroundColor: Colors[colorScheme].tabIconDefault,
-        width: "100%",
-        height: "10%",
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-      }}>
-      <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
-         <Image 
-            source={require('../assets/images/owietracking-logo.png')}
-            resizeMode={'contain'}
-            style={[styles.logo]}
-          />
-        <Text style={styles.title}>OwieTracking</Text>
-      </View>
-    </View>
+
     <ScrollView style={{flex: 1, marginBottom: 6}}>
        {/*} <Text style={styles.titleText}>User Information</Text>
           <View style={[styles.view, {backgroundColor: Colors[colorScheme].inputBackground}]}>
@@ -111,6 +95,25 @@ export default function UserScreen() {
           provider we do not have to comply to HIPAA. 
           </Text>
         </View>
+        
+        <View
+      style={{
+        backgroundColor: Colors[colorScheme].tabIconDefault,
+        width: "100%",
+        height: "10%",
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+      }}>
+      <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
+         <Image 
+            source={require('../assets/images/owietracking-logo.png')}
+            resizeMode={'contain'}
+            style={[styles.logo]}
+          />
+        <Text style={styles.title}>OwieTracking</Text>
+      </View>
+    </View>
+
     </ScrollView>
     <EditScreenInfo path="/screens/UserScreen.tsx" />
   </SafeAreaView>
@@ -155,7 +158,8 @@ const styles = StyleSheet.create({
     height: 45
   },
   header: {
-    paddingTop: 25, 
+    paddingTop: 10, 
+    paddingBottom: 10, 
     flexDirection: "row",
     backgroundColor: "#3a5140",
     justifyContent:'center',

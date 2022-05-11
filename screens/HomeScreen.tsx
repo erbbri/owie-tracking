@@ -1,15 +1,17 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, ScrollView, Image} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, ScrollView, Image, Pressable} from 'react-native';
 import 'react-native-gesture-handler'
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { TrackersContext } from '../context/TrackersContext';
 import React, { useContext , useState, useEffect} from 'react';
+import { FontAwesome } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
 import RenderTracker from '../components/RenderTracker';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
@@ -50,7 +52,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             flexDirection: 'row',
           }}>
 
-          <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault}]}>
+          <View style={[styles.header, {backgroundColor: Colors[colorScheme].tabIconDefault} ]}>
 
             <Image 
                 source={require('../assets/images/owietracking-logo.png')}
@@ -58,7 +60,19 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                 style={[styles.logo]}
             />
             <Text style={styles.title}>OwieTracking</Text>
-            
+            <Pressable
+              onPress={() => navigation.navigate('User')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                paddingTop: 5, 
+                paddingLeft: 40,
+              })}>
+              <AntDesign
+                name="user"
+                size={35}
+                color='#f1f2f3'
+              />
+            </Pressable>
           </View>
         </View>
        <ScrollView style={{flex: 1, marginBottom: 6}}>
@@ -101,7 +115,8 @@ const styles = StyleSheet.create({
     height: 45
   },
   header: {
-    paddingTop: 25,
+    paddingTop: 15, 
+    paddingBottom: 15,
     flexDirection: "row", 
     backgroundColor: "#3a5140",
     justifyContent:'center',
