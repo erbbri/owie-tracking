@@ -55,6 +55,18 @@ const editTrackerName = (newName, trackerName) => {
   )
 }
 
+//edit slider values
+const editSliderValues = (newMin,, newMax, trackerName) => {
+  db.transaction ( tx=> {
+    tx.executeSql('update trackers set slidermin = (?) where name = (?)', [newMin, trackerName] ); 
+    tx.executeSql('update trackers set slidermax = (?) where name = (?)', [newMax, trackerName] ); 
+  },
+  (t, error) => { console.log("db error editSlider"); console.log(error);},
+  //if inserting is a success, run function (for refreshTrackers in context)
+  (t, success) => { console.log("changed slider values") }
+  )
+}
+
 //drop database
 const dropTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
@@ -104,4 +116,5 @@ export const trackerDatabase = {
   setupTrackersAsync,
   dropTrackersDatabaseAsync,
   editTrackerName, 
+  editSliderValues, 
 }
