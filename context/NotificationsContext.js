@@ -91,25 +91,17 @@ const schedulePushNotification = (
 }
 
 //testing function
-const sendPushNotification = async (expoPushToken) => {
-    const message = {
-      to: expoPushToken,
-      sound: 'default',
-      title: 'Fucking Work',
-      body: 'Bo Body',
-      data: { someData: 'goes here' },
-    };
-  
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
+async function sendPushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "You've got mail! 📬",
+      body: 'Here is the notification body',
+      data: { data: 'goes here' },
+    },
+    trigger: { seconds: 2 },
+  });
 }
+
   
 const registerForPushNotificationsAsync = async ()=> {
   let token;

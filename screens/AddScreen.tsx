@@ -5,6 +5,7 @@ import { Formik, Field } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
+
 import EditScreenInfo from '../components/EditScreenInfo';
 import React, {useState, useContext, useEffect, useRef} from 'react';
 import { Text, View } from '../components/Themed';
@@ -30,6 +31,25 @@ export default function AddScreen({ navigation }) {
 //For Date/Time Picker
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [text, setText] = useState('Empty');
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS == 'ios');
+    setDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+    setText(fDate + '\n' + fTime)
+
+    console.log(fDate + ' (' + fTime + ')')
+  }
+  const showMode = (currentMode)=> {
+    setShow(true);
+    setMode(currentMode);
+  }
 
   const insertTracker = (name, type, min, max) => {
     addNewTracker(name, type, parseInt(min), parseInt(max)); 
@@ -102,6 +122,30 @@ export default function AddScreen({ navigation }) {
                 />
               </View>
               ]}
+              <View style ={{margin: 10}}>
+                  <Button title = 'Select Time' 
+                  color={Colors[colorScheme].tabIconDefault}
+                  onPress={() => showMode('date')} />
+              </View>
+              <View style ={{margin: 10}}>
+                  <Button 
+                  title = 'Select Time' 
+                  color={Colors[colorScheme].tabIconDefault}
+                  onPress={() => showMode('time')} />
+                <Text style={styles.text}>{text}</Text>
+              </View>
+
+              {
+                show && (
+                  <DateTimePicker
+                  testID='dateTimePicker'
+                  value={date}
+                  mode={mode}
+                  is24Hour={false}
+                  display='default'
+                  onChange={onChange}
+                />)}
+              
             {/*  <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
                 <Switch 
                   trackColor={{ false: Colors[colorScheme].switchColorOff, Colors[colorScheme].switchColorOn  }}
@@ -117,7 +161,7 @@ export default function AddScreen({ navigation }) {
         <Button
         title="Send Notification"
         onPress={async () => {
-          await sendPushNotification(expoPushToken);
+          await sendPushNotification();
         }}
         />
         <Button 
