@@ -58,6 +58,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                 style={[styles.logo]}
             />
             <Text style={styles.title}>OwieTracking</Text>
+            
           </View>
         </View>
        <ScrollView style={{flex: 1, marginBottom: 6}}>
