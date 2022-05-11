@@ -56,7 +56,7 @@ const editTrackerName = (newName, trackerName) => {
 }
 
 //edit slider values
-const editSliderValues = (newMin,, newMax, trackerName) => {
+const editSliderValues = (newMin, newMax, trackerName) => {
   db.transaction ( tx=> {
     tx.executeSql('update trackers set slidermin = (?) where name = (?)', [newMin, trackerName] ); 
     tx.executeSql('update trackers set slidermax = (?) where name = (?)', [newMax, trackerName] ); 
