@@ -45,7 +45,8 @@
     "react-native-slider-text": "0.0.10",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
-    "sqlite": "^4.0.25"
+    "sqlite": "^4.0.25",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

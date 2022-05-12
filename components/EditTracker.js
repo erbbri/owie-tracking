@@ -15,8 +15,6 @@ export default class EditTracker extends Component {
                     EditSliderModalVisible: false, 
                     DeleteModalVisible: false, 
                     NewName: 'one',
-                    NewMin: 0, 
-                    NewMax: 0,   
                   }; 
         };
   
@@ -30,6 +28,8 @@ export default class EditTracker extends Component {
   handlePress = () => {
       console.log(this.state.NewName)
       this.changeName(this.state.NewName, this.props.trackerName)
+      this.setEditCheckModalVisible(false)
+      this.setEditSliderModalVisible(false)
   }
 
   setNewName = (name) => {
@@ -63,24 +63,12 @@ export default class EditTracker extends Component {
       }
   }
 
-  changeValues(min, max, trackerName){
-    const context = this.context; 
-    if (max > min){
-      context.editSlider(min, max, trackerName); 
-      console.log('slider values changed'); 
-      context.refreshTrackers(); 
-    }
-  }
-  
-
   render(){  
     const { EditCheckModalVisible } = this.state; 
     const { EditSliderModalVisible } = this.state; 
     const { DeleteModalVisible } = this.state; 
     const { NewName } = this.state; 
-    const { NewMin } = this.state; 
-    const { NewMax } = this.state; 
-    
+
     if(this.props.trackerType == 'checkbox'){
     return (
       <View>
@@ -139,8 +127,8 @@ export default class EditTracker extends Component {
         disabled={true}
       ></Checkbox>
       <Text style={{color: this.props.color, fontSize: 22}}>{this.props.trackerName}</Text>
-      <IconButton icon="circle-edit-outline" onPress={()=>this.setEditCheckModalVisible(true)} />
-      <IconButton icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
+      <IconButton color={this.props.color} icon="circle-edit-outline" onPress={()=>this.setEditCheckModalVisible(true)} />
+      <IconButton color={this.props.color} icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
       </View>
       </View>
     );
@@ -220,8 +208,8 @@ export default class EditTracker extends Component {
           <Text style={{ color: this.props.color, fontSize: 20}}>{this.props.sliderMax}</Text>
         </View>
         <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignContent: 'space-around'}}>
-          <IconButton icon="circle-edit-outline" onPress={()=>this.setEditSliderModalVisible(true)} />
-          <IconButton icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
+          <IconButton color={this.props.color} icon="circle-edit-outline" onPress={()=>this.setEditSliderModalVisible(true)} />
+          <IconButton color={this.props.color} icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
         </View>
         </View>
         </View>

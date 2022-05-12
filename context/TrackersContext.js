@@ -33,11 +33,6 @@ export const TrackersContextProvider = props => {
     return trackerDatabase.editTrackerName(newName, trackerName)
   }
 
-  const editSlider = (newMin, newMax, trackerName) => {
-    //edit slider values
-    return trackerDatabase.editSliderValues(newMin, newMax, trackerName)
-  }
-
   const refreshTrackers = () =>  {
     //get trackers and set them in useState trackers
     return trackerDatabase.getTrackers(setTrackers)
@@ -51,7 +46,6 @@ export const TrackersContextProvider = props => {
     removeTracker,
     refreshTrackers, 
     editName, 
-    editSlider
   };
 
   // pass the value in provider and return

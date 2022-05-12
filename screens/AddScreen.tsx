@@ -3,6 +3,7 @@ import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton } from 'react-native-paper';
 import { Formik, Field } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as yup from 'yup'; 
 
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -14,6 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 
 import { TrackersContext } from '../context/TrackersContext';
 import { NotificationsContext } from '../context/NotificationsContext'
+import { ThemeContext } from 'react-native-elements';
 
 
 
@@ -30,6 +32,36 @@ export default function AddScreen({ navigation }) {
 //For Date/Time Picker
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
+
+
+  const trackerValidationSchema = yup.object().shape ({
+    name: yup
+      .string()
+      .required('Tracker Name is required'),
+    
+    type: yup
+      .string()
+      .oneOf(['checkbox', 'slider', 'text'])
+      .required("Tracker type must be selected"),
+
+    min: yup
+      .number()
+      .typeError("Min must be a number")
+      .required("enter Min")
+      .min(0),
+    
+    max: yup
+      .number()
+      .max(25)
+      .when('min', (min) => {
+          if (min) {
+              return yup.number()
+                  .min((min + 1), 'Max must be greater than min')
+                  .typeError("Max must be a number")
+                  .required("enter Max")
+          }
+      }),
+  })
 
   const insertTracker = (name, type, min, max) => {
     addNewTracker(name, type, parseInt(min), parseInt(max)); 
@@ -49,19 +81,25 @@ export default function AddScreen({ navigation }) {
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
-        initialValues={{ name: '', type: '', min: '0', max: '0', switch: false}}
+        validationSchema={trackerValidationSchema}
+        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false}}
         onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
+        validateOnMount={true}
       >
 
-        {({ handleChange, handleBlur, handleSubmit, values}) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors, isValid}) => (
         <View style={{paddingTop: 10}}>
           <Text style={styles.text}>Tracker Name</Text>
           <TextInput
+            name="name"
             style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
             onChangeText={handleChange('name')}
             onBlur={handleBlur('name')}
             value={values.name}
           />
+          {errors.name &&
+            <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.name}</Text>
+          }
           <View style={{paddingTop: 20, paddingBottom: 10}}>
            <RadioButton.Group              
                      onValueChange={handleChange('type')}
@@ -81,11 +119,16 @@ export default function AddScreen({ navigation }) {
                        <Text style={styles.text}>Text</Text>
                    </View>
                </RadioButton.Group>
+               {errors.type &&
+                <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.radioGroup}</Text>
+              }
                </View>
               {values.type == "slider" && [
+              <View>
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
                 <Text style={styles.text}>Min: </Text>
                 <TextInput
+                name="min"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText, marginRight: 10}}
                 key = {4}
                 onChangeText={handleChange('min')}
@@ -94,12 +137,18 @@ export default function AddScreen({ navigation }) {
                 />
                 <Text style={styles.text}>Max: </Text>
                 <TextInput
+                name="max"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
                 key = {5}
                 onChangeText={handleChange('max')}
                 onBlur={handleBlur('max')}
                 value={values.max}
                 />
+              </View>
+              {errors.min &&
+                  <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.min}</Text>}
+                {errors.max &&
+                  <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.max}</Text> }
               </View>
               ]}
             {/*  <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
@@ -122,6 +171,7 @@ export default function AddScreen({ navigation }) {
         />
         <Button 
         onPress={handleSubmit} 
+        disabled={!isValid}
         title="Submit" 
         color={Colors[colorScheme].tabIconDefault}
         />
