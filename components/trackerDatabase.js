@@ -47,11 +47,23 @@ const deleteTracker = (trackerName) => {
 //edit tracker name
 const editTrackerName = (newName, trackerName) => {
   db.transaction ( tx=> {
-    tx.executeSql('update trackers set name = (?) where name = (?)', [newName, trackerName] ); 
+    tx.executeSql('update trackers set name = (?) where name = (?)', [newName, trackerName] );
   },
   (t, error) => { console.log("db error editTracker"); console.log(error);},
   //if inserting is a success, run function (for refreshTrackers in context)
   (t, success) => { console.log("changed tracker name") }
+  )
+}
+
+//edit slider values
+const editSliderValues = (newMin, newMax, trackerName) => {
+  db.transaction ( tx=> {
+    tx.executeSql('update trackers set slidermin = (?) where name = (?)', [newMin, trackerName] );
+    tx.executeSql('update trackers set slidermax = (?) where name = (?)', [newMax, trackerName] );
+  },
+  (t, error) => { console.log("db error editSlider"); console.log(error);},
+  //if inserting is a success, run function (for refreshTrackers in context)
+  (t, success) => { console.log("changed slider values") }
   )
 }
 
@@ -103,5 +115,5 @@ export const trackerDatabase = {
   setupTrackersDatabaseAsync,
   setupTrackersAsync,
   dropTrackersDatabaseAsync,
-  editTrackerName, 
+  editTrackerName,
 }

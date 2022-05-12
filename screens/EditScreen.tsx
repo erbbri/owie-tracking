@@ -46,6 +46,19 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
             style={[styles.logo]}
           />
           <Text style={styles.title}>OwieTracking</Text>
+          <Pressable
+              onPress={() => navigation.navigate('User')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                paddingTop: 5, 
+                paddingLeft: 40,
+              })}>
+              <AntDesign
+                name="user"
+                size={35}
+                color='#f1f2f3'
+              />
+            </Pressable>
         </View>
       </View>
 
@@ -102,7 +115,8 @@ const styles = StyleSheet.create({
     height: 45
   },
   header: {
-    paddingTop: 25, 
+    paddingTop: 15, 
+    paddingBottom: 15,
     flexDirection: "row",
     width: '100%',
     justifyContent:'center',

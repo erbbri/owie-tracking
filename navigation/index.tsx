@@ -55,6 +55,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="User" component={UserScreen} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="Create" component={AddScreen} />
@@ -81,7 +82,7 @@ function BottomTabNavigator() {
         tabBarInactiveBackgroundColor: Colors[colorScheme].tabIconDefault,
         tabBarActiveBackgroundColor: Colors[colorScheme].tabIconSelected,
       }}>
-       <BottomTab.Screen
+       {/*<BottomTab.Screen
         name="User"
         component={UserScreen}
         options={{
@@ -90,8 +91,8 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="user" size={24} color="#f1f2f3" />
           ),
-        }}
-      />
+        }} 
+      /> */}
        <BottomTab.Screen
         name="Calendar"
         component={CalendarScreen}
