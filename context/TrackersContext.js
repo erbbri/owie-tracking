@@ -23,14 +23,14 @@ export const TrackersContextProvider = props => {
     return trackerDatabase.insertTracker(trackerName, trackerType, sliderMin, sliderMax, refreshTrackers)
   };
 
-  const removeTracker = (trackerName) => {
+  const removeTracker = (trackerID) => {
     //insert tracker into database and refresh context
-    return trackerDatabase.deleteTracker(trackerName)
+    return trackerDatabase.deleteTracker(trackerID)
   };
 
-  const editName = (newName, trackerName) => {
+  const editName = (newName, trackerID) => {
     //edit tracker name
-    return trackerDatabase.editTrackerName(newName, trackerName)
+    return trackerDatabase.editTrackerName(newName, trackerID)
   }
 
   const refreshTrackers = () =>  {

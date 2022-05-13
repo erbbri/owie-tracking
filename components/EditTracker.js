@@ -27,7 +27,7 @@ export default class EditTracker extends Component {
 
   handlePress = () => {
       console.log(this.state.NewName)
-      this.changeName(this.state.NewName, this.props.trackerName)
+      this.changeName(this.state.NewName, this.props.trackerID)
       this.setEditCheckModalVisible(false)
       this.setEditSliderModalVisible(false)
   }
@@ -48,16 +48,16 @@ export default class EditTracker extends Component {
     this.setState({DeleteModalVisible: visible})
   }
 
-  remove(trackerName){
+  remove(trackerID){
       const context = this.context; 
-      context.removeTracker(trackerName); 
+      context.removeTracker(trackerID); 
       context.refreshTrackers(); 
   }
 
-  changeName(NewName, trackerName){
+  changeName(NewName, trackerID){
       const context = this.context;
       if (NewName) {
-        context.editName(NewName, trackerName); 
+        context.editName(NewName, trackerID); 
         console.log('new name'); 
         context.refreshTrackers(); 
       }
@@ -112,7 +112,7 @@ export default class EditTracker extends Component {
                 Are you sure you want to delete {this.props.trackerName}?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
-            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerName)}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID)}> Yes, Delete </Button>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color}  size={40} onPress={() => this.setDeleteModalVisible(!DeleteModalVisible)}> No Go Back</Button>
             </View>
             </View>
@@ -176,7 +176,7 @@ export default class EditTracker extends Component {
                 Are you sure you want to delete {this.props.trackerName}?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
-            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerName)}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID)}> Yes, Delete </Button>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color}  size={40} onPress={() => this.setDeleteModalVisible(!DeleteModalVisible)}> No Go Back</Button>
             </View>
             </View>
@@ -224,6 +224,7 @@ export default class EditTracker extends Component {
 EditTracker.propTypes = {
     trackerType: PropTypes.string,
     trackerName: PropTypes.string,
+    trackerID: PropTypes.any, 
     sliderMin: PropTypes.any,
     sliderMax: PropTypes.any,
     color: PropTypes.string,

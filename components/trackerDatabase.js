@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import * as SQLite from "expo-sqlite"
+import { State } from 'react-native-gesture-handler';
 
 //open database called trackerDatabase
 const db = SQLite.openDatabase('trackerDatabase.db')
@@ -34,9 +35,9 @@ const insertTracker = (trackerName, trackerType, sliderMin, sliderMax, successFu
 }
 
 //delete tracker
-const deleteTracker = (trackerName) => {
+const deleteTracker = (trackerID) => {
   db.transaction( tx => {
-      tx.executeSql( 'delete from trackers where name = (?)', [trackerName] );
+      tx.executeSql( 'delete from trackers where id = (?)', [trackerID] );
     },
     (t, error) => { console.log("db error deleteTracker"); console.log(error);},
     //if inserting is a success, run function (for refreshTrackers in context)
@@ -45,25 +46,13 @@ const deleteTracker = (trackerName) => {
 }
 
 //edit tracker name
-const editTrackerName = (newName, trackerName) => {
+const editTrackerName = (newName, trackerID) => {
   db.transaction ( tx=> {
-    tx.executeSql('update trackers set name = (?) where name = (?)', [newName, trackerName] );
+    tx.executeSql('update trackers set name = (?) where id = (?)', [newName, trackerID] );
   },
   (t, error) => { console.log("db error editTracker"); console.log(error);},
   //if inserting is a success, run function (for refreshTrackers in context)
   (t, success) => { console.log("changed tracker name") }
-  )
-}
-
-//edit slider values
-const editSliderValues = (newMin, newMax, trackerName) => {
-  db.transaction ( tx=> {
-    tx.executeSql('update trackers set slidermin = (?) where name = (?)', [newMin, trackerName] );
-    tx.executeSql('update trackers set slidermax = (?) where name = (?)', [newMax, trackerName] );
-  },
-  (t, error) => { console.log("db error editSlider"); console.log(error);},
-  //if inserting is a success, run function (for refreshTrackers in context)
-  (t, success) => { console.log("changed slider values") }
   )
 }
 

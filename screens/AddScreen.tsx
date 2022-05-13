@@ -1,5 +1,5 @@
 import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch} from 'react-native';
-import { Button, TextInput } from 'react-native';
+import { Button, TextInput, } from 'react-native';
 import { BottomNavigation, Modal, RadioButton } from 'react-native-paper';
 import { Formik, Field } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,6 +16,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import { TrackersContext } from '../context/TrackersContext';
 import { NotificationsContext } from '../context/NotificationsContext'
 import { ThemeContext } from 'react-native-elements';
+import { resolveUri } from 'expo-asset/build/AssetSources';
 
 
 
@@ -25,14 +26,13 @@ export default function AddScreen({ navigation }) {
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
 
-  const { trackers, addNewTracker } = trackersContext;
+  const { trackers, addNewTracker, checkTracker} = trackersContext;
   const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
   const testMin = 0; 
   const testMax = 10; 
 //For Date/Time Picker
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
-
 
   const trackerValidationSchema = yup.object().shape ({
     name: yup

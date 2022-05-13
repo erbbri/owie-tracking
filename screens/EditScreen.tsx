@@ -68,6 +68,7 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
       {trackers.map((tracker) => (
         <View>
         <EditTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} 
+          trackerID={tracker.id}
           sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
           color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></EditTracker>
         </View>
