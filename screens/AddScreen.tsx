@@ -1,6 +1,6 @@
 import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch} from 'react-native';
 import { Button, TextInput } from 'react-native';
-import { BottomNavigation, Modal, RadioButton } from 'react-native-paper';
+import { BottomNavigation, Modal, RadioButton, Checkbox } from 'react-native-paper';
 import { Formik, Field } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -15,7 +15,6 @@ import useColorScheme from '../hooks/useColorScheme';
 
 import { TrackersContext } from '../context/TrackersContext';
 import { NotificationsContext } from '../context/NotificationsContext'
-
 
 
 export default function AddScreen({ navigation }) {
@@ -86,7 +85,6 @@ export default function AddScreen({ navigation }) {
            <RadioButton.Group              
                      onValueChange={handleChange('type')}
                      value={values.type}
-                     
                      >
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                        <RadioButton key={1} value='checkbox' color= {Colors[colorScheme].radioButton}></RadioButton>
@@ -123,18 +121,12 @@ export default function AddScreen({ navigation }) {
               </View>
               ]}
               <View style ={{margin: 10}}>
-                  <Button title = 'Select Time' 
-                  color={Colors[colorScheme].tabIconDefault}
-                  onPress={() => showMode('date')} />
-              </View>
-              <View style ={{margin: 10}}>
                   <Button 
                   title = 'Select Time' 
                   color={Colors[colorScheme].tabIconDefault}
                   onPress={() => showMode('time')} />
                 <Text style={styles.text}>{text}</Text>
               </View>
-
               {
                 show && (
                   <DateTimePicker
