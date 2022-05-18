@@ -82,13 +82,14 @@ export default class EditTracker extends Component {
         >
           <View style={styles.centeredView}>
             <View style={[styles.modalView, {backgroundColor: this.props.backgroundColor}]}>
-            <View style={{backgroundColor:'transparent', flexDirection: 'row', alignItems: 'center', flex: 2}}>
-             <View style={{ marginLeft: 40, marginTop: 40, borderWidth: 2, borderColor: 'gray', backgroundColor: 'transparent', width: '70%'}}>
+            <Text style={{color: this.props.color, fontSize: 25, alignSelf: 'center', marginTop: 10}}>Rename Tracker:</Text>
+            <View style={{backgroundColor:'transparent', flexDirection: 'row', alignItems: 'center', flex: 1}}>
+             <View style={{ marginLeft: 40, marginTop: 0, borderWidth: 2, borderColor: 'gray', backgroundColor: 'transparent', width: '70%'}}>
               <TextInput style={{fontSize: 22}} 
                 placeholder={" " + this.props.trackerName} 
                 onChangeText={name => this.handleChange(name)}/>
               </View>
-             <IconButton style={{marginTop: 35}} icon="check" size={30} onPress={() => this.handlePress()} />
+             <IconButton style={{marginTop: 5}} icon="check" size={30} onPress={() => this.handlePress()} />
              </View>
             <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
             <IconButton icon="close" size={30} onPress={() => this.setEditCheckModalVisible(!EditCheckModalVisible)} />

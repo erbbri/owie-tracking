@@ -66,7 +66,7 @@ const setupEntriesDatabaseAsync = async () => {
 const setupEntriesAsync = async () => {
   return new Promise((resolve, _reject) => {
     db.transaction( tx => {
-        tx.executeSql( 'insert into entries (id,trackerID, trackerName, trackerType, date, checked, scale, input) values (?,?,?,?,?,?,?,?)', [1, 1, "take meds", "checkbox", "2022-12-04", 1, -1, ''] );
+        tx.executeSql( 'insert into entries (id, trackerID, trackerName, trackerType, date, checked, scale, input) values (?,?,?,?,?,?,?,?)', [1, 1, "take meds", "checkbox", "2022-12-04", 1, -1, ''] );
       },
       (t, error) => { console.log("db error insertEntry"); console.log(error); resolve() },
       (t, success) => { console.log("db success insertEntry"); resolve(success)}

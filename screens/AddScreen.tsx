@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch, ScrollView} from 'react-native';
 import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton, Checkbox } from 'react-native-paper';
 import { Formik, Field } from 'formik';
@@ -26,7 +26,7 @@ export default function AddScreen({ navigation }) {
   const notificationsContext = useContext(NotificationsContext)
 
   const { trackers, addNewTracker, checkTracker} = trackersContext;
-  const { schedulePushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
+  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
   const testMin = 0; 
   const testMax = 10; 
 //For Date/Time Picker
@@ -83,8 +83,8 @@ export default function AddScreen({ navigation }) {
       }),
   })
 
-  const insertTracker = (name, type, min, max) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max)); 
+  const insertTracker = (name, type, min, max, notifID) => {
+    addNewTracker(name, type, parseInt(min), parseInt(max), notifID); 
     goBack(); 
   }
 
@@ -99,11 +99,12 @@ export default function AddScreen({ navigation }) {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
+    <ScrollView>
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
         validationSchema={trackerValidationSchema}
-        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false}}
-        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
+        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false, notifID: ''}}
+        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max, values.notifID)}
         validateOnMount={true}
       >
 
@@ -286,7 +287,7 @@ export default function AddScreen({ navigation }) {
         title="Send Notification"
         onPress={async () => {
           //Needs arguments
-          await schedulePushNotification();
+          await sendPushNotification(); // 
         }}
         />
         <Button 
@@ -298,6 +299,7 @@ export default function AddScreen({ navigation }) {
         </View>
         )}
       </Formik>
+      </ScrollView>
       <EditScreenInfo path="/screens/AddScreen.tsx" />
     </SafeAreaView>
   );

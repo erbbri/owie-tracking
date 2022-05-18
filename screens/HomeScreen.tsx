@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       {trackers.map((tracker) => (
         //<Text key={tracker.id}>{tracker.name} : {tracker.type}</Text>
       // <Swipeable>
-        <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
+        <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} trackerID={tracker.id} sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
           color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></RenderTracker>
       // </Swipeable>
       ))}

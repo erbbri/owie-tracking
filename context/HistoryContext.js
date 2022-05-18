@@ -20,7 +20,7 @@ export const HistoryContextProvider = props => {
 
   const addNewEntry = (trackerID, trackerName, trackerType, date, checked, scale, input) => {
     //insert tracker into database and refresh context
-    return historyDatabase.insertTracker(trackerID, trackerName, trackerType, date, checked, scale, input, refreshEntries)
+    return historyDatabase.insertEntry(trackerID, trackerName, trackerType, date, checked, scale, input, refreshEntries)
   };
 
   const refreshEntries = () =>  {
@@ -28,10 +28,17 @@ export const HistoryContextProvider = props => {
     return historyDatabase.getEntries(setEntries)
   }
 
+  const removeAllEntries = () =>{
+    historyDatabase.dropEntriesDatabaseAsync();
+    historyDatabase.setupEntriesDatabaseAsync(); 
+    refreshEntries(); 
+  }
+
   // Make the context object:
   const historyContext = {
     entries,
-    addNewEntry
+    addNewEntry, 
+    removeAllEntries,
   };
 
   // pass the value in provider and return

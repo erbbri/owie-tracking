@@ -18,9 +18,9 @@ export const TrackersContextProvider = props => {
     refreshTrackers()
   }, [] )
 
-  const addNewTracker = (trackerName, trackerType, sliderMin, sliderMax) => {
+  const addNewTracker = (trackerName, trackerType, sliderMin, sliderMax, notifID) => {
     //insert tracker into database and refresh context
-    return trackerDatabase.insertTracker(trackerName, trackerType, sliderMin, sliderMax, refreshTrackers)
+    return trackerDatabase.insertTracker(trackerName, trackerType, sliderMin, sliderMax, notifID, refreshTrackers)
   };
 
   const removeTracker = (trackerID) => {
@@ -33,10 +33,22 @@ export const TrackersContextProvider = props => {
     return trackerDatabase.editTrackerName(newName, trackerID)
   }
 
+  //edit notifid
+  const changeNotifID = (notifID, trackerID) => {
+    //edit tracker name
+    return trackerDatabase.editNotifID(notifID, trackerID)
+  }
+
   const refreshTrackers = () =>  {
     //get trackers and set them in useState trackers
     return trackerDatabase.getTrackers(setTrackers)
     console.log('trackers refreshed')
+  }
+
+  const removeAllTrackers = () =>{
+    trackerDatabase.dropTrackersDatabaseAsync(); 
+    trackerDatabase.setupTrackersDatabaseAsync(); 
+    refreshTrackers(); 
   }
 
   // Make the context object:
@@ -46,6 +58,8 @@ export const TrackersContextProvider = props => {
     removeTracker,
     refreshTrackers, 
     editName, 
+    changeNotifID,
+    removeAllTrackers, 
   };
 
   // pass the value in provider and return

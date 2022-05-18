@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Image, Pressable} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, Image, Pressable, ScrollView} from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -11,12 +11,13 @@ import useColorScheme from '../hooks/useColorScheme';
 
 import React, { useContext, useState } from 'react';
 import { HistoryContext } from '../context/HistoryContext';
+import RenderHistory from '../components/RenderHistory';
+import { colors } from 'react-native-elements';
 
 
 export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   
   const colorScheme = useColorScheme();
-  const [modalVisible, setModalVisible] = useState(false);
 
   //use context
   const { entries } = useContext(HistoryContext);
@@ -55,13 +56,16 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
             </Pressable>
         </View>
       </View>
-      <View>
+      <ScrollView style={{flex: 1, marginBottom: 6}}>
       <Text style={styles.historyStyle}>History</Text>
       { console.log(entries) }
       {entries.map((entry) => (
-        <Text key={entry.id}>{entry.trackerID} : {entry.trackerType}, {entry.date}, {entry.checked}, {entry.scale}, {entry.input}</Text>
+        <RenderHistory key={entry.id} trackerType={entry.trackerType} trackerName={entry.trackerName} trackerID={entry.trackerID}
+        date={entry.date} checked={entry.checked} scale={entry.scale} input={entry.input}
+        color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items} dateColor={Colors[colorScheme].date}>
+        </RenderHistory>
       ))}
-      </View>
+      </ScrollView>
       <View style={styles.bottom}>
         <Pressable
               onPress={() => navigation.navigate('Pdf')}

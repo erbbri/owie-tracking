@@ -16,7 +16,6 @@ import EditTracker from '../components/EditTracker';
 
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   const colorScheme = useColorScheme();
-  const [modalVisible, setModalVisible] = useState(false);
 
   //use context
   const { trackers, removeTracker, refreshTrackers } = useContext(TrackersContext);
@@ -77,14 +76,16 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
       <View style={styles.bottom}>
         <Pressable
               onPress={() => navigation.navigate('Create')}
-              style={({ pressed }) => ({
+              style={
+                ({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
               <AntDesign
                 name="pluscircle"
                 size={40}
-                color= {Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
+                color= {Colors[colorScheme].tint}
+                containerStyle={{ marginRight: 15, backgroundColor: 'transparent' }}
+                
               />
             </Pressable>
             </View>

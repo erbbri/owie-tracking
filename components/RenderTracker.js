@@ -2,28 +2,63 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Slider } from 'react-native-elements';
 import { Text, View } from '../components/Themed';
-import { Checkbox } from 'react-native-paper';
+import { Checkbox, IconButton } from 'react-native-paper';
 import PropTypes from 'prop-types';
+
+import { HistoryContext } from '../context/HistoryContext';
 
 export default class RenderTracker extends Component {
   constructor(props) {
           super(props);
-          this.state = { isSelected: 'unchecked' }; 
+          this.state = { isSelected: 'unchecked', toRender: true, sliderValue: 0 }; 
         }
+
+  static contextType = HistoryContext; 
+
+  isChecked(){
+    if (this.state.isSelected === 'checked') {
+      return false; 
+    }
+    else{
+      return true; 
+    }; 
+  }
+
+  sliderMoved(value){
+    this.setState({sliderValue: value})
+  }
   
   setChecked(isSelected){
     if(isSelected === 'checked'){
       this.setState({isSelected: 'unchecked'}); 
     }
     else {
-      this.setState({isSelected: 'checked'}); 
+      this.setState({isSelected: 'checked'});
     }
   }
 
+  buttonPress(trackerID, trackerName, trackerType){
+    const context = this.context
+    var day = String(new Date().getDate()).padStart(2, '0'); 
+    var month = String(new Date().getMonth() + 1).padStart(2, '0'); 
+    var year = new Date().getFullYear(); 
+    var date = day + '-' + month + '-' + year; 
+    //console.log(date)
+    if(trackerType == 'checkbox'){
+      context.addNewEntry(trackerID, trackerName, trackerType, date, this.state.isSelected , 0, '')
+    }
+    if(trackerType == 'slider'){
+      context.addNewEntry(trackerID, trackerName, trackerType, date, 'unchecked', this.state.sliderValue, '')
+    }
+    this.setState({toRender: false})
+  }
+
+
   render(){  
-    if(this.props.trackerType == 'checkbox'){
+    if(this.props.trackerType == 'checkbox' && this.state.toRender == true){
     return (
       <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
+      <View style={{backgroundColor: 'transparent', flexDirection: 'row'}}>
       <View style={{marginLeft: '2%'}}></View>
       <Checkbox
         color={'#3a5140'}
@@ -31,18 +66,23 @@ export default class RenderTracker extends Component {
         onPress={() => this.setChecked(this.state.isSelected)
         }
       ></Checkbox>
-      <Text style={{color: this.props.color, fontSize: 22}}>{this.props.trackerName}</Text>
+      <Text style={{color: this.props.color, fontSize: 22, marginTop: 2}}>{this.props.trackerName}</Text>
+      </View>
+      <View style={{backgroundColor: 'transparent', marginRight: 10}}>
+      <IconButton icon="checkbox-marked-circle-outline" size={30} color={this.props.color} disabled={this.isChecked()} onPress={() => this.buttonPress(this.props.trackerID, this.props.trackerName, this.props.trackerType)}/> 
+      </View>
       </View>
     );
     }
-    else if (this.props.trackerType == 'slider'){
+    else if (this.props.trackerType == 'slider' && this.state.toRender == true){
     return(
       <View style={[styles.sliderview, {backgroundColor: this.props.backgroundColor}]}>
       <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'center'}}>
       <Text style={{ color: this.props.color, fontSize: 22}}>   {this.props.trackerName}</Text>
       <Text></Text>
       </View>
-      <Slider maximumValue={this.props.sliderMax} minimumValue={this.props.sliderMin} 
+      <Slider
+        maximumValue={this.props.sliderMax} minimumValue={this.props.sliderMin} 
         step={1} trackStyle={{height: 10, backgroundColor: 'transparent'}}
         thumbStyle={{width: 20, height: 20, color: "#aad5b5", backgroundColor: '#aad5b5'}}
         thumbProps={{
@@ -53,14 +93,19 @@ export default class RenderTracker extends Component {
                 width: 30,
                 backgroundColor: 'transparent',
               }}>
-              <Text style={{ color: this.props.color, fontSize: 20}}> {this.state.value} </Text>
+              <Text style={{ color: this.props.color, fontSize: 20}}> {this.state.sliderValue} </Text>
               </View>
           )}}
-        value={this.state.value} onValueChange={value => this.setState({ value })} style={styles.slider}></Slider>
-      <View style={{backgroundColor: this.props.backgroundColor, flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'space-between',
+        value={this.state.sliderValue} 
+        onValueChange={value => this.sliderMoved(value)} 
+        style={styles.slider}></Slider>
+      <View style={{marginRight: 10, backgroundColor: this.props.backgroundColor, flexDirection: 'row', alignSelf: 'stretch', justifyContent: 'space-between',
     marginLeft: '15%', marginRight: '15%'}}>
         <Text style={{ color: this.props.color, fontSize: 20}}>{this.props.sliderMin}</Text>
         <Text style={{ color: this.props.color, fontSize: 20}}>{this.props.sliderMax}</Text>
+      </View>
+      <View style={{backgroundColor: 'transparent', marginRight: 10, alignSelf: 'flex-end'}}>
+      <IconButton icon="checkbox-marked-circle-outline" size={30} color={this.props.color} onPress={() => this.buttonPress(this.props.trackerID, this.props.trackerName, this.props.trackerType)}/> 
       </View>
       </View>
       )
@@ -75,6 +120,7 @@ export default class RenderTracker extends Component {
  RenderTracker.propTypes = {
     trackerType: PropTypes.string,
     trackerName: PropTypes.string,
+    trackerID: PropTypes.any,
     sliderMin: PropTypes.any,
     sliderMax: PropTypes.any,
     color: PropTypes.string,
@@ -87,6 +133,7 @@ export default class RenderTracker extends Component {
       marginRight: '2%',
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'space-between',
       marginTop: 8,
       paddingTop: 3,
       paddingBottom: 3,
