@@ -75,8 +75,8 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
               <AntDesign
                 name="pdffile1"
                 size={40}
-                color= {Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
+                color= {Colors[colorScheme].tint}
+                style={{ marginRight: 15}}
               />
             </Pressable>
             </View>
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'flex-end',
+    backgroundColor: 'transparent', 
   },
   historyStyle: {
     alignSelf: 'center', 

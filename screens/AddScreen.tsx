@@ -149,6 +149,7 @@ export default function AddScreen({ navigation }) {
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
                 <Text style={styles.text}>Min: </Text>
                 <TextInput
+                keyboardType='numeric'
                 name="min"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText, marginRight: 10}}
                 key = {4}
@@ -158,6 +159,7 @@ export default function AddScreen({ navigation }) {
                 />
                 <Text style={styles.text}>Max: </Text>
                 <TextInput
+                keyboardType='numeric'
                 name="max"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
                 key = {5}

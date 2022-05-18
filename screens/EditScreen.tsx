@@ -84,8 +84,7 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
                 name="pluscircle"
                 size={40}
                 color= {Colors[colorScheme].tint}
-                containerStyle={{ marginRight: 15, backgroundColor: 'transparent' }}
-                
+                style={{marginRight: 15, borderRadius: 100, backgroundColor: Colors[colorScheme].background }}               
               />
             </Pressable>
             </View>
@@ -128,9 +127,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'flex-end',
+    backgroundColor: 'transparent'
   },
   editTitle: {
     alignSelf: 'center', 
     fontSize: 30
-  }
+  },
+  pressable: {
+    borderRadius: 100,
+
+
+  },
 });

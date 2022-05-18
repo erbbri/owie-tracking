@@ -35,6 +35,20 @@ export default class RenderHistory extends Component {
           </View>
         );
       }
+      if(this.props.trackerType == 'text'){
+        return(
+          <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
+          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {this.props.date} </Text>
+          <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{marginLeft: '2%'}}></View>
+          <Text style={{color: this.props.color, fontSize: 22, marginTop: 2}}>{this.props.trackerName} </Text>
+          </View>
+          <Text style={{color: 'gray', fontSize: 20, marginTop: 2, paddingLeft: 10}}>{this.props.input}</Text>
+          <View style={{backgroundColor: 'transparent', marginRight: 10}}>
+          </View>
+          </View>
+          )
+      }
       if(this.props.trackerType == 'slider'){
         return(
           <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>

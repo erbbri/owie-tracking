@@ -67,6 +67,17 @@ const editNotifID = (notifID, trackerID) => {
   )
 }
 
+//edit date
+const updateDates = (date) => {
+  db.transaction ( tx=> {
+    tx.executeSql('update trackers set date = (?)', [date] );
+  },
+  (t, error) => { console.log("db error update date"); console.log(error);},
+  //if inserting is a success, run function (for refreshTrackers in context)
+  (t, success) => { console.log("changed tracker date") }
+  )
+}
+
 //drop database
 const dropTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
@@ -87,7 +98,7 @@ const setupTrackersDatabaseAsync = async () => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
         tx.executeSql(
-          'create table if not exists trackers (id integer primary key not null, name text, type text, slidermin integer, slidermax integer, notifid text);'
+          'create table if not exists trackers (id integer primary key not null, name text, type text, slidermin integer, slidermax integer, notifid text, date text);'
         );
       },
       (_, error) => { console.log("db error creating tracker tables"); console.log(error); reject(error) },
@@ -100,7 +111,7 @@ const setupTrackersDatabaseAsync = async () => {
 const setupTrackersAsync = async () => {
   return new Promise((resolve, _reject) => {
     db.transaction( tx => {
-        tx.executeSql( 'insert into trackers (id, name, type, slidermin, slidermax, notifid) values (?,?,?,?,?,?)', [1, "take meds", "checkbox", 0, 0,''] );
+        tx.executeSql( 'insert into trackers (id, name, type, slidermin, slidermax, notifid, date) values (?,?,?,?,?,?,?)', [1, "Eat breakfast", "checkbox", 0, 10,'', '18-05-2022'] );
       },
       (t, error) => { console.log("db error insertTracker"); console.log(error); resolve() },
       (t, success) => { console.log("db success insertTracker"); resolve(success)}
@@ -117,4 +128,5 @@ export const trackerDatabase = {
   dropTrackersDatabaseAsync,
   editTrackerName,
   editNotifID,
+  updateDates,
 }
