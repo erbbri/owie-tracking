@@ -63,7 +63,6 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
 
       <ScrollView style={{flex: 1, marginBottom: 6}}>
         <Text style={styles.editTitle}>Edit Trackers</Text>
-      { console.log(trackers) }
       {trackers.map((tracker) => (
         <View>
         <EditTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} 

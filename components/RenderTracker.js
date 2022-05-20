@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { Slider } from 'react-native-elements';
 import { Text, View } from '../components/Themed';
@@ -7,10 +7,11 @@ import PropTypes from 'prop-types';
 
 import { HistoryContext } from '../context/HistoryContext';
 
+
 export default class RenderTracker extends Component {
   constructor(props) {
           super(props);
-          this.state = { isSelected: 'unchecked', toRender: true, sliderValue: 0, text: '' }; 
+          this.state = { isSelected: 'unchecked', sliderValue: 0, text: '' }; 
         }
 
   static contextType = HistoryContext; 
@@ -58,12 +59,13 @@ export default class RenderTracker extends Component {
     if(trackerType == 'slider'){
       context.addNewEntry(trackerID, trackerName, trackerType, date, 'unchecked', this.state.sliderValue, '')
     }
-    this.setState({toRender: false})
+    this.setState({sliderValue: 0})
+    this.props.doneFunction(this.props.trackerID); 
   }
 
 
   render(){  
-    if(this.props.trackerType == 'checkbox' && this.state.toRender == true){
+    if(this.props.trackerType == 'checkbox' && this.props.done == 0){
     return (
       <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
       <View style={{backgroundColor: 'transparent', flexDirection: 'row'}}>
@@ -82,7 +84,7 @@ export default class RenderTracker extends Component {
       </View>
     );
     }
-    if (this.props.trackerType == 'text' && this.state.toRender == true){
+    if (this.props.trackerType == 'text' && this.props.done == 0){
     return(
       <View style={[styles.textview, {backgroundColor: this.props.backgroundColor}]}>
       <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
@@ -106,7 +108,7 @@ export default class RenderTracker extends Component {
       </View>
       )
     }
-    else if (this.props.trackerType == 'slider' && this.state.toRender == true){
+    else if (this.props.trackerType == 'slider' && this.props.done == 0){
       return(
         <View style={[styles.sliderview, {backgroundColor: this.props.backgroundColor}]}>
         <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
@@ -118,6 +120,7 @@ export default class RenderTracker extends Component {
       </View>
       <View style={{ backgroundColor: 'transparent', width: '100%', alignItems: 'center', paddingTop: 4}}>
         <Slider
+          
           maximumValue={this.props.sliderMax} minimumValue={this.props.sliderMin} 
           step={1} trackStyle={{height: 10, backgroundColor: 'transparent'}}
           thumbStyle={{width: 20, height: 20, color: "#aad5b5", backgroundColor: '#aad5b5'}}
@@ -157,6 +160,8 @@ export default class RenderTracker extends Component {
     trackerID: PropTypes.any,
     sliderMin: PropTypes.any,
     sliderMax: PropTypes.any,
+    done: PropTypes.any,
+    doneFunction: PropTypes.func, 
     color: PropTypes.string,
     backgroundColor: PropTypes.string, 
   }

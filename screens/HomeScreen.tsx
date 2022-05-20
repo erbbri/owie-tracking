@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Button, ScrollView, Image, Pressable} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, ScrollView, Image, Pressable} from 'react-native';
 import 'react-native-gesture-handler'
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -6,6 +6,8 @@ import { RootTabScreenProps } from '../types';
 import { TrackersContext } from '../context/TrackersContext';
 import React, { useContext , useState, useEffect} from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+
+import { Button } from 'react-native-paper';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -18,13 +20,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const colorScheme = useColorScheme();
   
   //use context
-  const { trackers } = useContext(TrackersContext);
+  const { trackers, setDone, refreshTrackers, resetAll } = useContext(TrackersContext);
 
-  const RightSwipeAction = () => {
-    return(
-      null
-    )
-  }
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
@@ -38,6 +35,11 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     );
   },[]);
 
+  function useDone (trackerID) {
+    setDone(1, trackerID); 
+    refreshTrackers(); 
+    console.log("function worked"); 
+  }
 
   //checks that trackers is defined (it is)
   if (typeof trackers !== 'undefined'){
@@ -77,16 +79,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         </View>
        <ScrollView style={{flex: 1, marginBottom: 6}}>
          <Text style={styles.dateStyle}>{currentDate}</Text>
-      { console.log(trackers) }
       {trackers.map((tracker) => (
-        //<Text key={tracker.id}>{tracker.name} : {tracker.type}</Text>
-      // <Swipeable>
-        <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} trackerID={tracker.id} sliderMin={tracker.slidermin} sliderMax={tracker.slidermax}
+        <RenderTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} trackerID={tracker.id}
+         sliderMin={tracker.slidermin} sliderMax={tracker.slidermax} done={tracker.done} doneFunction={useDone}
           color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items}></RenderTracker>
-      // </Swipeable>
       ))}
       </ScrollView>
-
       <EditScreenInfo path="/screens/HomeScreen.tsx" />
     </SafeAreaView>
   );
