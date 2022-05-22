@@ -14,6 +14,25 @@ import { HistoryContext } from '../context/HistoryContext';
 import RenderHistory from '../components/RenderHistory';
 import { colors } from 'react-native-elements';
 
+import * as Print from 'expo-print';
+import GenerateHTML from '../components/GenerateHTML';
+
+const htmlstart = `
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  </head>
+  <body style="font-family: sans-serif; ">
+    <h1 style="text-align: center; font-size: 30px; font-weight: normal;">
+      OwieTracking
+    </h1>
+`;
+
+const htmlend = `
+</body>
+</html>
+`
+
 
 export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   
@@ -21,6 +40,19 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
 
   //use context
   const { entries } = useContext(HistoryContext);
+
+  const onPressPrint =()=>{
+    var htmlMiddle; 
+    htmlMiddle = GenerateHTML(entries);
+    //removes 'undefined' which is for some reason there
+    htmlMiddle = htmlMiddle.slice(9); 
+    var htmlComplete = htmlstart + htmlMiddle + htmlend; 
+    console.log(htmlComplete);
+    Print.printAsync({
+      html: htmlComplete
+    })
+
+  }
 
   //checks that entries is defined (it is)
   if (typeof entries !== 'undefined'){
@@ -58,7 +90,6 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
       </View>
       <ScrollView style={{flex: 1, marginBottom: 6}}>
       <Text style={styles.historyStyle}>History</Text>
-      { console.log(entries) }
       {entries.map((entry) => (
         <RenderHistory key={entry.id} trackerType={entry.trackerType} trackerName={entry.trackerName} trackerID={entry.trackerID}
         date={entry.date} checked={entry.checked} scale={entry.scale} input={entry.input}
@@ -68,7 +99,7 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
       </ScrollView>
       <View style={styles.bottom}>
         <Pressable
-              onPress={() => navigation.navigate('Pdf')}
+              onPress={() => onPressPrint()}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
