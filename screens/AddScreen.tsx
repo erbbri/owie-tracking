@@ -19,14 +19,14 @@ import { resolveUri } from 'expo-asset/build/AssetSources';
 
 
 
-export default function AddScreen({ navigation }) {
+export default function AddScreen(this: any, { navigation }) {
 
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
 
   const { trackers, addNewTracker, checkTracker} = trackersContext;
-  const { schedulePushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
+  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
   const testMin = 0; 
   const testMax = 10; 
 //For Date/Time Picker
@@ -36,6 +36,11 @@ export default function AddScreen({ navigation }) {
   const [text, setText] = useState('Empty');
 
   const [checked, setChecked] = React.useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    //state changes according to switch
+    //which will result in re-render the text
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -93,9 +98,6 @@ export default function AddScreen({ navigation }) {
     navigation.navigate('Root', { screen: 'Edit' }); 
     console.log('go back'); 
   }
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
@@ -171,8 +173,17 @@ export default function AddScreen({ navigation }) {
                   <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.max}</Text> }
               </View>
               ]}
-             <View style={{paddingTop: 20, paddingBottom: 10}}>
-             <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
+              <Text style={styles.text}>Add Notification</Text>
+               <Switch
+                trackColor={{true: '#3a5140', false: 'grey'}}
+                thumbColor={isEnabled ? '#f1f2f3' : '#f4f3f4'}
+                value = {isEnabled}
+                onValueChange={toggleSwitch}
+              />
+              </View>
+             <View style={styles.list}>
+             <View style={styles.item}>
               <Checkbox.Item
                 label = "Monday"
                 position='leading'
@@ -183,7 +194,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Tuesday"
                 position='leading'
@@ -194,7 +205,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Wednesday"
                 position='leading'
@@ -205,7 +216,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Thursday"
                 position='leading'
@@ -216,7 +227,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Friday"
                 position='leading'
@@ -227,7 +238,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Saturday"
                 position='leading'
@@ -238,7 +249,7 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.item}>
               <Checkbox.Item
                 label = "Sunday"
                 position='leading'
@@ -249,7 +260,6 @@ export default function AddScreen({ navigation }) {
                 }}
                />
                </View>
-               <Text style={styles.text}>{text}</Text>
               </View>
               <View style ={{margin: 10}}>
                   <Button 
@@ -268,25 +278,11 @@ export default function AddScreen({ navigation }) {
                   display='default'
                   onChange={onChange}
                 />)}
-                
-              
-            {/*  <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
-                <Switch 
-                  trackColor={{ false: Colors[colorScheme].switchColorOff, Colors[colorScheme].switchColorOn  }}
-                  thumbColor={isEnabled ? Colors[colorScheme].switchThumbOn : Colors[colorScheme].switchThumbOff}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                />
-                <Text style={styles.text}>Add Notification</Text>
-              </View>
-            */}
           
         <Button
         title="Send Notification"
         onPress={async () => {
-          //Needs arguments
-          await schedulePushNotification();
+          await sendPushNotification();
         }}
         />
         <Button 
@@ -307,6 +303,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  list: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  item: {
+    margin: 3,
+    width: 150,
+    alignItems: 'center'
   },
   title: {
     alignSelf: 'center',

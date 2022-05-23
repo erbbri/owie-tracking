@@ -12,6 +12,7 @@ export default {
     items: '#f1f2f3',
     itemtext: '#3a5140',
     radioButton: '#3a5140',
+    toggleSwitch: '#3a5140',
     inputBackground: '#f1f2f3',
     inputText: '#3a5140', 
   },
