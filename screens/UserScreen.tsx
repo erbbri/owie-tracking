@@ -1,5 +1,6 @@
-import {StyleSheet, SafeAreaView, Platform, StatusBar, Button, Image, ScrollView} from 'react-native';
-
+import {StyleSheet, SafeAreaView, Platform, StatusBar, Image, ScrollView, Modal} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Button } from 'react-native-paper';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { AntDesign } from '@expo/vector-icons'; 
@@ -8,10 +9,40 @@ import { AntDesign } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import { TrackersContext } from '../context/TrackersContext';
+import { HistoryContext } from '../context/HistoryContext';
 
 export default function UserScreen() {
 
   const colorScheme = useColorScheme();
+  const { removeAllTrackers } = useContext(TrackersContext)
+  const { removeAllEntries } = useContext(HistoryContext)
+
+  const [trackerModalVisible, setTrackerModalVisible] = useState(false);
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+
+  
+  const deleteTrackers =()=>{
+    removeAllTrackers(); 
+    setTrackerModalVisible(false); 
+    callConfirmModal(); 
+  }
+
+  const deleteHistory =()=> {
+    removeAllEntries(); 
+    setHistoryModalVisible(false); 
+    callConfirmModal(); 
+  }
+
+  const callConfirmModal =()=> {
+    setConfirmModalVisible(true)
+
+    setTimeout(() => {
+      setConfirmModalVisible(false)
+    }, 2000) 
+
+  }
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
@@ -23,6 +54,67 @@ export default function UserScreen() {
 
             </Text>
     </View> */}
+
+    <Modal
+          transparent={true}
+          visible={confirmModalVisible}
+        >
+          <View style={styles.centeredView}>
+            <View style={[styles.confirmModalView, {backgroundColor: Colors[colorScheme].text}]}>
+            <View style={{backgroundColor:'transparent', padding: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+              <Text style={{color: Colors[colorScheme].itemtext, fontSize: 20}}>Deletion was successful</Text>
+            </View>
+            </View>
+          </View>
+      </Modal>
+      <Modal
+          transparent={true}
+          visible={trackerModalVisible}
+          onRequestClose={() => {
+            setTrackerModalVisible(!trackerModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={[styles.modalView, {backgroundColor: Colors[colorScheme].items }]}>
+            <View style={{backgroundColor:'transparent', padding: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+              <Text style={{color: Colors[colorScheme].itemtext, fontSize: 25}}> 
+                Are you sure you want to delete all trackers?</Text> 
+             </View> 
+            <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={Colors[colorScheme].background} size={40} onPress={() => deleteTrackers()}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={Colors[colorScheme].background}  size={40} onPress={() => setTrackerModalVisible(!trackerModalVisible)}> No Go Back</Button>
+            </View>
+            </View>
+            </View>
+      </Modal>
+      <Modal
+          transparent={true}
+          visible={historyModalVisible}
+          onRequestClose={() => {
+            setHistoryModalVisible(!historyModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={[styles.modalView, {backgroundColor: Colors[colorScheme].items }]}>
+            <View style={{backgroundColor:'transparent', padding: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+              <Text style={{color: Colors[colorScheme].itemtext, fontSize: 25}}> 
+                Are you sure you want to delete all trackers?</Text> 
+             </View> 
+            <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={Colors[colorScheme].background} size={40} onPress={() => deleteHistory()}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={Colors[colorScheme].background}  size={40} onPress={() => setHistoryModalVisible(!historyModalVisible)}> No Go Back</Button>
+            </View>
+            </View>
+            </View>
+      </Modal>
+
+        <View>
+        <Button color={Colors[colorScheme].tabIconDefault} mode='contained' onPress={()=> setTrackerModalVisible(true)}> 
+          Delete All Trackers </Button>
+        </View>
+        <View style={{marginTop: 2}}>
+          <Button color={Colors[colorScheme].tabIconDefault} mode='contained' onPress={()=> setHistoryModalVisible(true)}> Delete All User History </Button>
+        </View>
         <Text style={styles.titleText}>About OwieTracking</Text>
           <View style={[styles.view, {backgroundColor: Colors[colorScheme].inputBackground}]}>
             <Text style={[styles.textStyle]}>
@@ -171,6 +263,49 @@ const styles = StyleSheet.create({
   subtitleText:{
     justifyContent: 'center', 
     fontSize: 25, 
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    backgroundColor: 'transparent',
+  },
+
+  confirmModalView: {
+    //margin: 10,
+    borderRadius: 10,
+    width: '90%',
+    height: '10%',
+    //padding: 5,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+    
+  },
+
+  modalView: {
+    margin: 20,
+    borderRadius: 20,
+    width: '90%',
+    height: '30%',
+    //padding: 20,
+    //alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
 });
 

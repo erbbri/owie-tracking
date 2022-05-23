@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch} from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch, ScrollView} from 'react-native';
 import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton, Checkbox } from 'react-native-paper';
 import { Formik, Field } from 'formik';
@@ -88,8 +88,8 @@ export default function AddScreen(this: any, { navigation }) {
       }),
   })
 
-  const insertTracker = (name, type, min, max) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max)); 
+  const insertTracker = (name, type, min, max, notifID) => {
+    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
     goBack(); 
   }
 
@@ -101,11 +101,12 @@ export default function AddScreen(this: any, { navigation }) {
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
+    <ScrollView>
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
         validationSchema={trackerValidationSchema}
-        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false}}
-        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
+        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false, notifID: ''}}
+        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max, values.notifID)}
         validateOnMount={true}
       >
 
@@ -150,6 +151,7 @@ export default function AddScreen(this: any, { navigation }) {
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
                 <Text style={styles.text}>Min: </Text>
                 <TextInput
+                keyboardType='numeric'
                 name="min"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText, marginRight: 10}}
                 key = {4}
@@ -159,6 +161,7 @@ export default function AddScreen(this: any, { navigation }) {
                 />
                 <Text style={styles.text}>Max: </Text>
                 <TextInput
+                keyboardType='numeric'
                 name="max"
                 style = {{fontSize: 20, backgroundColor: Colors[colorScheme].inputBackground, color: Colors[colorScheme].inputText}}
                 key = {5}
@@ -294,6 +297,7 @@ export default function AddScreen(this: any, { navigation }) {
         </View>
         )}
       </Formik>
+      </ScrollView>
       <EditScreenInfo path="/screens/AddScreen.tsx" />
     </SafeAreaView>
   );

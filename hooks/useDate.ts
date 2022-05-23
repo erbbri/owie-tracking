@@ -1,19 +1,19 @@
 import React, {useEffect} from 'react';
 
-import {trackerDatabase} from '../components/trackerDatabase'
+import { dateDatabase } from '../components/dateDatabase';
 
 //create database if it doesn't exist and set up initial tracker
-export default function useTrackersDatabase() {
+export default function useDate() {
   const [isDBLoadingComplete, setDBLoadingComplete] = React.useState(false);
 
   useEffect(() => {
     async function loadDataAsync() {
       try {
-        //possibly don't need to drop database
-        //await trackerDatabase.dropTrackersDatabaseAsync()
-        await trackerDatabase.setupTrackersDatabaseAsync()
-        await trackerDatabase.setupTrackersAsync()
 
+        await dateDatabase.dropDateDatabaseAsync
+        await dateDatabase.setupDateDatabaseAsync()
+        await dateDatabase.setupDateAsync()
+        
         setDBLoadingComplete(true);
       } catch (e) {
         console.warn(e);

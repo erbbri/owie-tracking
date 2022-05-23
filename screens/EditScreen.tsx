@@ -16,7 +16,6 @@ import EditTracker from '../components/EditTracker';
 
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
   const colorScheme = useColorScheme();
-  const [modalVisible, setModalVisible] = useState(false);
 
   //use context
   const { trackers, removeTracker, refreshTrackers } = useContext(TrackersContext);
@@ -64,7 +63,6 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
 
       <ScrollView style={{flex: 1, marginBottom: 6}}>
         <Text style={styles.editTitle}>Edit Trackers</Text>
-      { console.log(trackers) }
       {trackers.map((tracker) => (
         <View>
         <EditTracker key={tracker.id} trackerType={tracker.type} trackerName={tracker.name} 
@@ -77,14 +75,15 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
       <View style={styles.bottom}>
         <Pressable
               onPress={() => navigation.navigate('Create')}
-              style={({ pressed }) => ({
+              style={
+                ({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
               <AntDesign
                 name="pluscircle"
                 size={40}
-                color= {Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
+                color= {Colors[colorScheme].tint}
+                style={{marginRight: 15, borderRadius: 100, backgroundColor: Colors[colorScheme].background }}               
               />
             </Pressable>
             </View>
@@ -127,9 +126,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'flex-end',
+    backgroundColor: 'transparent'
   },
   editTitle: {
     alignSelf: 'center', 
     fontSize: 30
-  }
+  },
+  pressable: {
+    borderRadius: 100,
+
+
+  },
 });
