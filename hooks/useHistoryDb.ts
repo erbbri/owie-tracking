@@ -9,10 +9,11 @@ export default function useHistoryDatabase() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
-        //don't need to drop database unless testing
+        //use for testing
         //await historyDatabase.dropEntriesDatabaseAsync()
         await historyDatabase.setupEntriesDatabaseAsync()
-        await historyDatabase.setupEntriesAsync()
+        // use for testing
+        //await historyDatabase.setupEntriesAsync()
 
         setHistoryDBLoadingComplete(true);
       } catch (e) {

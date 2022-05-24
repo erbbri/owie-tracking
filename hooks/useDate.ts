@@ -9,10 +9,11 @@ export default function useDate() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
-
-        await dateDatabase.dropDateDatabaseAsync
+        //use for testing
+        //await dateDatabase.dropDateDatabaseAsync
         await dateDatabase.setupDateDatabaseAsync()
-        await dateDatabase.setupDateAsync()
+        //use for testing
+        //await dateDatabase.setupDateAsync()
         
         setDBLoadingComplete(true);
       } catch (e) {

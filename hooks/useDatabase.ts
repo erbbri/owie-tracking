@@ -9,10 +9,11 @@ export default function useTrackersDatabase() {
   useEffect(() => {
     async function loadDataAsync() {
       try {
-        //possibly don't need to drop database
+        //used for testing
         //await trackerDatabase.dropTrackersDatabaseAsync()
         await trackerDatabase.setupTrackersDatabaseAsync()
-        await trackerDatabase.setupTrackersAsync()
+        //used for testing
+        //await trackerDatabase.setupTrackersAsync()
 
         setDBLoadingComplete(true);
       } catch (e) {
