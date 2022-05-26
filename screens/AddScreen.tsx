@@ -3,7 +3,7 @@ import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton, Checkbox } from 'react-native-paper';
 import { Formik, Field, validateYupSchema } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as yup from 'yup'; 
+import * as yup from 'yup';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import React, {useState, useContext, useEffect, useRef} from 'react';
@@ -24,17 +24,17 @@ export default function AddScreen(this: any, { navigation }) {
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
-  const textBody = 'You have a notification set for this tracker on OwieTracking for '
+  const textBody = 'You have a notification set for this tracker on OwieTracking.'
 
   const { trackers, addNewTracker, checkTracker} = trackersContext;
-  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
-  const testMin = 0; 
-  const testMax = 10; 
+  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext;
+  const testMin = 0;
+  const testMax = 10;
 //For Date/Time Picker
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('Empty');
+  const [text, setText] = useState('12:00 AM');
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -42,10 +42,36 @@ export default function AddScreen(this: any, { navigation }) {
     setDate(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
-    setText(fTime)
-
-    console.log('(' + fTime + ')')
+    if (tempDate.getHours() > 12){
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() - 12 + ':0' + tempDate.getMinutes() + ' PM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours() - 12 + ':' + tempDate.getMinutes() + ' PM';
+        setText(fTime)
+      }
+    }
+    else if (tempDate.getHours() === 0) {
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() + 12 + ':0' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours()+ 12 + ':' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+    }
+    else{
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() + ':0' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours() + ':' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+    }
   }
   const showMode = (currentMode)=> {
     setShow(true);
@@ -56,7 +82,7 @@ export default function AddScreen(this: any, { navigation }) {
     name: yup
       .string()
       .required('Tracker Name is required'),
-    
+
     type: yup
       .string()
       .oneOf(['checkbox', 'slider', 'text'])
@@ -67,7 +93,7 @@ export default function AddScreen(this: any, { navigation }) {
       .typeError("Min must be a number")
       .required("enter Min")
       .min(0),
-    
+
     max: yup
       .number()
       .max(25)
@@ -82,15 +108,15 @@ export default function AddScreen(this: any, { navigation }) {
   })
 
   const insertTracker = (name, type, min, max) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max), 0); 
+    addNewTracker(name, type, parseInt(min), parseInt(max), 0);
     sendPushNotification(name, textBody, date);
-    goBack(); 
+    goBack();
   }
 
   const goBack = () => {
 
-    navigation.navigate('Root', { screen: 'Edit' }); 
-    console.log('go back'); 
+    navigation.navigate('Root', { screen: 'Edit' });
+    console.log('go back');
   }
 
   return (
@@ -118,10 +144,10 @@ export default function AddScreen(this: any, { navigation }) {
             <Text style={{ fontSize: 15, color: Colors[colorScheme].tint }}>{errors.name}</Text>
           }
           <View style={{paddingTop: 20, paddingBottom: 10}}>
-           <RadioButton.Group              
+           <RadioButton.Group
                      onValueChange={handleChange('type')}
                      value={values.type}
-                     
+
                      >
                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
                        <RadioButton key={1} value='checkbox' color= {Colors[colorScheme].radioButton}></RadioButton>
@@ -171,7 +197,7 @@ export default function AddScreen(this: any, { navigation }) {
               </View>
               ]}
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
-              <Text style={styles.text}>Add Notification:</Text>
+              <Text style={styles.time}>Add Notification:</Text>
                <Switch
                 style={styles.time}
                 trackColor={{true: '#3a5140', false: 'grey'}}
@@ -181,15 +207,13 @@ export default function AddScreen(this: any, { navigation }) {
               />
               </View>
               {values.switch == true && [
-              <View style ={{paddingTop: 10, paddingBottom: 20}}>
-                  <Button 
-                  title = 'Select Time' 
+              <View style ={styles.select}>
+                  <Button
+                  title = 'Select Time'
                   color={Colors[colorScheme].tabIconDefault}
                   onPress={() => showMode('time')} />
-                <Text 
-                style={styles.time}
-                name = 'time'>
-                {text}</Text>
+                <Text
+                style = {styles.text}>{text}</Text>
               </View>
               ]}
               {
@@ -199,13 +223,13 @@ export default function AddScreen(this: any, { navigation }) {
                   value={date}
                   mode={mode}
                   is24Hour={false}
-                  display='default'
+                  display='spinner'
                   onChange={onChange}
                 />)}
-          
-        <Button 
-        onPress={handleSubmit} 
-        title="Submit" 
+
+        <Button
+        onPress={handleSubmit}
+        title="Submit"
         color={Colors[colorScheme].tabIconDefault}
         />
        {/*} <Text>{JSON.stringify(values, 0, 2)}</Text>*/}
@@ -222,10 +246,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  list: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   item: {
     margin: 3,
@@ -250,7 +270,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'flex-end',
   },
+  select: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'center',
+    paddingTop: 10,
+    paddingBottom: 30,
+  },
   text: {
+    paddingRight: 10,
+    paddingLeft: 10,
     fontSize: 20,
   }
 });

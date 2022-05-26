@@ -9,13 +9,12 @@ export default {
     tint: tintColorLight,
     tabIconDefault: '#3a5140',
     tabIconSelected: tintColorLight,
+    select: '#6e9979',
     items: '#f1f2f3',
     itemtext: '#3a5140',
     radioButton: '#3a5140',
-    toggleSwitch: '#3a5140',
     inputBackground: '#f1f2f3',
     inputText: '#3a5140', 
-    date: '#6e9979',
   },
   dark: {
     text: '#f1f2f3',
@@ -23,6 +22,7 @@ export default {
     tint: tintColorDark,
     tabIconDefault: '#6e9979',
     tabIconSelected: tintColorDark,
+    select: '#6e9979',
     items: '#d6d9db',
     itemtext: '#3a5140',
     radioButton: '#aad5b5',
@@ -32,6 +32,5 @@ export default {
     switchColorOn: '#6e9979', 
     switchThumbOff: '#f1f2f3',
     switchThumbOn: '#aad5b5', 
-    date: '#6e9979',
   }
 };
