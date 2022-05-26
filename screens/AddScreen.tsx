@@ -36,13 +36,6 @@ export default function AddScreen(this: any, { navigation }) {
   const [show, setShow] = useState(false);
   const [text, setText] = useState('Empty');
 
-  const [checked, setChecked] = React.useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    //state changes according to switch
-    //which will result in re-render the text
-
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS == 'ios');
@@ -111,7 +104,7 @@ export default function AddScreen(this: any, { navigation }) {
         validateOnMount={true}
       >
 
-        {({ handleChange, handleBlur, handleSubmit, values, errors, isValid}) => (
+        {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, isValid}) => (
         <View style={{paddingTop: 10}}>
           <Text style={styles.text}>Tracker Name</Text>
           <TextInput
@@ -182,11 +175,12 @@ export default function AddScreen(this: any, { navigation }) {
                <Switch
                 style={styles.time}
                 trackColor={{true: '#3a5140', false: 'grey'}}
-                thumbColor={isEnabled ? '#f1f2f3' : '#f4f3f4'}
-                value = {isEnabled}
-                onValueChange={toggleSwitch}
+                thumbColor={values.switch ? '#f1f2f3' : '#f4f3f4'}
+                value = {values.switch}
+                onValueChange={(value) => setFieldValue('switch', value)}
               />
               </View>
+              {values.switch == true && [
               <View style ={{paddingTop: 10, paddingBottom: 20}}>
                   <Button 
                   title = 'Select Time' 
@@ -197,6 +191,7 @@ export default function AddScreen(this: any, { navigation }) {
                 name = 'time'>
                 {text}</Text>
               </View>
+              ]}
               {
                 show && (
                   <DateTimePicker

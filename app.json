@@ -4,7 +4,7 @@
     "slug": "owie-tracking",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/owietracking-logo.png",
+    "icon": "./assets/images/appLogo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -23,9 +23,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/owietracking-logo.png",
+        "foregroundImage": "./assets/images/appLogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "owietracking.apk"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

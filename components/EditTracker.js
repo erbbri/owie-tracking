@@ -223,6 +223,7 @@ export default class EditTracker extends Component {
         >
           <View style={styles.centeredView}>
             <View style={[styles.modalView, {backgroundColor: this.props.backgroundColor}]}>
+            <Text style={{color: this.props.color, fontSize: 25, alignSelf: 'center', marginTop: 10}}>Rename Tracker:</Text>
             <View style={{backgroundColor:'transparent', flexDirection: 'row', alignItems: 'center', flex: 2}}>
              <View style={{ marginLeft: 40, marginTop: 40, borderWidth: 2, borderColor: 'gray', backgroundColor: 'transparent', width: '70%'}}>
               <TextInput style={{fontSize: 22}} 

@@ -12,8 +12,7 @@ export default function useDate() {
         //use for testing
         //await dateDatabase.dropDateDatabaseAsync
         await dateDatabase.setupDateDatabaseAsync()
-        //use for testing
-        //await dateDatabase.setupDateAsync()
+        await dateDatabase.setupDateAsync()
         
         setDBLoadingComplete(true);
       } catch (e) {
