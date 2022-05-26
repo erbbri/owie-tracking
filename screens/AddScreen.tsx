@@ -24,7 +24,7 @@ export default function AddScreen(this: any, { navigation }) {
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
-  const textBody = 'You have a notification set for this tracker on OwieTracking for '
+  const textBody = 'You have a notification set for this tracker on OwieTracking.'
 
   const { trackers, addNewTracker, checkTracker} = trackersContext;
   const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
@@ -34,7 +34,7 @@ export default function AddScreen(this: any, { navigation }) {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('Empty');
+  const [text, setText] = useState('12:00 AM');
 
   const [checked, setChecked] = React.useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -49,10 +49,36 @@ export default function AddScreen(this: any, { navigation }) {
     setDate(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
-    setText(fTime)
-
-    console.log('(' + fTime + ')')
+    if (tempDate.getHours() > 12){
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() - 12 + ':0' + tempDate.getMinutes() + ' PM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours() - 12 + ':' + tempDate.getMinutes() + ' PM';
+        setText(fTime)
+      }
+    }
+    else if (tempDate.getHours() === 0) {
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() + 12 + ':0' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours()+ 12 + ':' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+    }
+    else{
+      if (tempDate.getMinutes() < 10){
+        let fTime = tempDate.getHours() + ':0' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+      else{
+        let fTime = tempDate.getHours() + ':' + tempDate.getMinutes() + ' AM';
+        setText(fTime)
+      }
+    }
   }
   const showMode = (currentMode)=> {
     setShow(true);
@@ -178,7 +204,7 @@ export default function AddScreen(this: any, { navigation }) {
               </View>
               ]}
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
-              <Text style={styles.text}>Add Notification:</Text>
+              <Text style={styles.time}>Add Notification:</Text>
                <Switch
                 style={styles.time}
                 trackColor={{true: '#3a5140', false: 'grey'}}
@@ -187,15 +213,13 @@ export default function AddScreen(this: any, { navigation }) {
                 onValueChange={toggleSwitch}
               />
               </View>
-              <View style ={{paddingTop: 10, paddingBottom: 20}}>
+              <View style ={styles.select}>
                   <Button 
                   title = 'Select Time' 
                   color={Colors[colorScheme].tabIconDefault}
                   onPress={() => showMode('time')} />
                 <Text 
-                style={styles.time}
-                name = 'time'>
-                {text}</Text>
+                style = {styles.text}>{text}</Text>
               </View>
               {
                 show && (
@@ -204,7 +228,7 @@ export default function AddScreen(this: any, { navigation }) {
                   value={date}
                   mode={mode}
                   is24Hour={false}
-                  display='default'
+                  display='spinner'
                   onChange={onChange}
                 />)}
           
@@ -227,10 +251,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  list: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   item: {
     margin: 3,
@@ -255,7 +275,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'flex-end',
   },
+  select: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'center',
+    paddingTop: 10, 
+    paddingBottom: 30,
+  },
   text: {
+    paddingRight: 10,
+    paddingLeft: 10,
     fontSize: 20,
   }
 });
