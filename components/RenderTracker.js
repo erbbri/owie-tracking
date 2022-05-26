@@ -76,7 +76,7 @@ export default class RenderTracker extends Component {
         onPress={() => this.setChecked(this.state.isSelected)
         }
       ></Checkbox>
-      <Text style={{color: this.props.color, fontSize: 22, marginTop: 2}}>{this.props.trackerName}</Text>
+      <Text style={{color: this.props.color, fontSize: 22, marginTop: 2, width: '72%'}}>{this.props.trackerName}</Text>
       </View>
       <View style={{backgroundColor: 'transparent', marginRight: 10}}>
       <IconButton icon="checkbox-marked-circle-outline" size={30} color={this.props.color} disabled={this.isChecked()} onPress={() => this.buttonPress(this.props.trackerID, this.props.trackerName, this.props.trackerType)}/> 
@@ -88,8 +88,8 @@ export default class RenderTracker extends Component {
     return(
       <View style={[styles.textview, {backgroundColor: this.props.backgroundColor}]}>
       <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
-          flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center',}}>
-      <Text style={{ color: this.props.color, fontSize: 22,}}>   {this.props.trackerName}</Text>
+          flexDirection: 'row', width: '99%', justifyContent: 'space-between', alignItems: 'center',}}>
+      <Text style={{ color: this.props.color, fontSize: 22, width: '85%', paddingLeft: 12}}>{this.props.trackerName}</Text>
       <View style={{backgroundColor: 'transparent', marginRight: 10, alignSelf: 'flex-end'}}>
       <IconButton icon="checkbox-marked-circle-outline" size={30} color={this.props.color} onPress={() => this.buttonPress(this.props.trackerID, this.props.trackerName, this.props.trackerType)}/> 
       </View>
@@ -112,8 +112,8 @@ export default class RenderTracker extends Component {
       return(
         <View style={[styles.sliderview, {backgroundColor: this.props.backgroundColor}]}>
         <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
-          flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center',}}>
-      <Text style={{ color: this.props.color, fontSize: 22,}}>   {this.props.trackerName}</Text>
+          flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center', width: '99%'}}>
+      <Text style={{ color: this.props.color, fontSize: 22, width: '85%', paddingLeft: 12, paddingBottom: 12}}>{this.props.trackerName}</Text>
       <View style={{backgroundColor: 'transparent', marginRight: 10, alignSelf: 'flex-end'}}>
       <IconButton icon="checkbox-marked-circle-outline" size={30} color={this.props.color} onPress={() => this.buttonPress(this.props.trackerID, this.props.trackerName, this.props.trackerType)}/> 
       </View>

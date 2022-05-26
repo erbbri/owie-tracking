@@ -156,7 +156,7 @@ export default function UserScreen() {
             {'\n'}On the History Screen you can see the data you have recorded on previous days.
             Also, here you can filter your data to more easily view your collected data. 
             {'\n'}
-            <Text style={{fontWeight:'bold', fontSize:17}}> Add Tracker Button is on Edit Tracker Page!</Text>
+            <Text style={{fontWeight:'bold', fontSize:17}}> Export to PDF Button is on History Page!</Text>
             
             {'\n'}{'\n'}
             <AntDesign name="pluscircle" size={24} color={Colors[colorScheme].inputText}></AntDesign>
