@@ -20,12 +20,11 @@ import { resolveUri } from 'expo-asset/build/AssetSources';
 
 
 export default function AddScreen(this: any, { navigation }) {
-
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
 
-  const { trackers, addNewTracker, checkTracker} = trackersContext;
+  const { trackers, addNewTracker, checkTracker, refreshTrackers} = trackersContext;
   const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
   const testMin = 0; 
   const testMax = 10; 
@@ -90,6 +89,7 @@ export default function AddScreen(this: any, { navigation }) {
 
   const insertTracker = (name, type, min, max, notifID) => {
     addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
+    refreshTrackers(); 
     goBack(); 
   }
 
