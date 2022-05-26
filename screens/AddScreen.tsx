@@ -20,15 +20,16 @@ import { resolveUri } from 'expo-asset/build/AssetSources';
 
 
 export default function AddScreen(this: any, { navigation }) {
+
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
   const textBody = 'You have a notification set for this tracker on OwieTracking.'
 
-  const { trackers, addNewTracker, checkTracker, refreshTrackers} = trackersContext;
-  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
-  const testMin = 0; 
-  const testMax = 10; 
+  const { trackers, addNewTracker, checkTracker} = trackersContext;
+  const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext;
+  const testMin = 0;
+  const testMax = 10;
 //For Date/Time Picker
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -106,10 +107,8 @@ export default function AddScreen(this: any, { navigation }) {
       }),
   })
 
-
-  const insertTracker = (name, type, min, max, notifID) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
-    refreshTrackers(); 
+  const insertTracker = (name, type, min, max) => {
+    addNewTracker(name, type, parseInt(min), parseInt(max), 0);
     sendPushNotification(name, textBody, date);
     goBack();
   }

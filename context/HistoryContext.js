@@ -7,37 +7,25 @@ export const HistoryContextProvider = props => {
   // Initial values are obtained from the props
   const {
     entries: initialEntries,
-    filteredEntries: initialFilteredEntries,
     children
   } = props;
 
   // Use State to store the values of entries
   const [entries, setEntries] = useState(initialEntries);
-  const [filteredEntries, setFilteredEntries] = useState(initialFilteredEntries)
 
   //refresh context from database
   useEffect(() => {
     refreshEntries()
   }, [] )
 
-  useEffect(() => {
-    searchEntries()
-  }, [] )
-
   const addNewEntry = (trackerID, trackerName, trackerType, date, checked, scale, input) => {
-    //insert entry into database and refresh context
+    //insert tracker into database and refresh context
     return historyDatabase.insertEntry(trackerID, trackerName, trackerType, date, checked, scale, input, refreshEntries)
   };
 
   const refreshEntries = () =>  {
-    //get entries and set them in useState entries
+    //get trackers and set them in useState trackers
     return historyDatabase.getEntries(setEntries)
-  }
-
-  //use to search entries
-  // add vars that need to be passed 
-  const searchEntries = () =>  {
-    return historyDatabase.searchForEntries(setFilteredEntries); 
   }
 
   const removeAllEntries = () =>{
@@ -49,8 +37,6 @@ export const HistoryContextProvider = props => {
   // Make the context object:
   const historyContext = {
     entries,
-    filteredEntries, 
-    searchEntries, 
     addNewEntry, 
     removeAllEntries,
   };

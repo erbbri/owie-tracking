@@ -22,23 +22,6 @@ const getEntries = (setEntriesFunc) => {
   );
 }
 
-//search history - setEntryFunc for useState
-const searchForEntries = (setEntriesFunc) => {
-  db.transaction(
-    tx => {
-      tx.executeSql(
-        'select * from entries',
-        [],
-        (_, { rows: { _array } }) => {
-          setEntriesFunc(_array)
-        }
-      );
-    },
-    (t, error) => { console.log("db error search entries"); console.log(error) },
-    (_t, _success) => { console.log("loaded searched entries")}
-  );
-}
-
 //add new entry
 const insertEntry = (trackerID, trackerName, trackerType, date, checked, scale, input, successFunc) => {
   db.transaction( tx => {
@@ -97,5 +80,4 @@ export const historyDatabase = {
   setupEntriesDatabaseAsync,
   setupEntriesAsync,
   dropEntriesDatabaseAsync,
-  searchForEntries, 
 }
