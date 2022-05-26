@@ -1,7 +1,7 @@
 import { StyleSheet, SafeAreaView, Platform, StatusBar, Switch, ScrollView} from 'react-native';
 import { Button, TextInput } from 'react-native';
 import { BottomNavigation, Modal, RadioButton, Checkbox } from 'react-native-paper';
-import { Formik, Field } from 'formik';
+import { Formik, Field, validateYupSchema } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup'; 
 
@@ -24,6 +24,7 @@ export default function AddScreen(this: any, { navigation }) {
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
+  const textBody = 'You have a notification set for this tracker on OwieTracking for '
 
   const { trackers, addNewTracker, checkTracker} = trackersContext;
   const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 
@@ -48,11 +49,10 @@ export default function AddScreen(this: any, { navigation }) {
     setDate(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
-    let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
-    setText(fDate + '\n' + fTime)
+    let fTime = tempDate.getHours() + ':' + tempDate.getMinutes();
+    setText(fTime)
 
-    console.log(fDate + ' (' + fTime + ')')
+    console.log('(' + fTime + ')')
   }
   const showMode = (currentMode)=> {
     setShow(true);
@@ -88,8 +88,9 @@ export default function AddScreen(this: any, { navigation }) {
       }),
   })
 
-  const insertTracker = (name, type, min, max, notifID) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
+  const insertTracker = (name, type, min, max) => {
+    addNewTracker(name, type, parseInt(min), parseInt(max), 0); 
+    sendPushNotification(name, textBody, date);
     goBack(); 
   }
 
@@ -105,8 +106,8 @@ export default function AddScreen(this: any, { navigation }) {
       <Text style={[styles.title, {color: Colors[colorScheme].text}]}>Create New Tracker</Text>
       <Formik
         validationSchema={trackerValidationSchema}
-        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false, notifID: ''}}
-        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max, values.notifID)}
+        initialValues={{ name: '', type: '', min: '0', max: '10', switch: false}}
+        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
         validateOnMount={true}
       >
 
@@ -177,99 +178,24 @@ export default function AddScreen(this: any, { navigation }) {
               </View>
               ]}
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
-              <Text style={styles.text}>Add Notification</Text>
+              <Text style={styles.text}>Add Notification:</Text>
                <Switch
+                style={styles.time}
                 trackColor={{true: '#3a5140', false: 'grey'}}
                 thumbColor={isEnabled ? '#f1f2f3' : '#f4f3f4'}
                 value = {isEnabled}
                 onValueChange={toggleSwitch}
               />
               </View>
-             <View style={styles.list}>
-             <View style={styles.item}>
-              <Checkbox.Item
-                label = "Monday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Tuesday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Wednesday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Thursday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Friday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Saturday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-               <View style={styles.item}>
-              <Checkbox.Item
-                label = "Sunday"
-                position='leading'
-                color={Colors[colorScheme].tabIconDefault}
-                status={checked ? 'checked' : 'unchecked'}
-                onPress={() => {
-                setChecked(!checked);
-                }}
-               />
-               </View>
-              </View>
-              <View style ={{margin: 10}}>
+              <View style ={{paddingTop: 10, paddingBottom: 20}}>
                   <Button 
                   title = 'Select Time' 
                   color={Colors[colorScheme].tabIconDefault}
                   onPress={() => showMode('time')} />
-                <Text style={styles.text}>{text}</Text>
+                <Text 
+                style={styles.time}
+                name = 'time'>
+                {text}</Text>
               </View>
               {
                 show && (
@@ -282,12 +208,6 @@ export default function AddScreen(this: any, { navigation }) {
                   onChange={onChange}
                 />)}
           
-        <Button
-        title="Send Notification"
-        onPress={async () => {
-          await sendPushNotification();
-        }}
-        />
         <Button 
         onPress={handleSubmit} 
         title="Submit" 
@@ -327,12 +247,14 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-
   header: {
     backgroundColor: "#3a5140",
     justifyContent:'center',
   },
-
+  time: {
+    fontSize: 20,
+    alignSelf: 'flex-end',
+  },
   text: {
     fontSize: 20,
   }

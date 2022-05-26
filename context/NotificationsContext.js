@@ -55,8 +55,7 @@ const Notification = () => {
 
 const schedulePushNotification = (
   trackerName,
-  slot,
-  type,
+  body,
   time,
   day
 ) => {
@@ -76,14 +75,15 @@ const schedulePushNotification = (
   const id = Notifications.scheduleNotificationAsync({
     content: {
       title: TrackerName,
-      body: slot,
+      body: body,
       // sound: 'default',
     },
     trigger: {
-      weekday: weekday,
-      hour: hours,
-      minute: minutes,
-      repeats: true,
+      //weekday: weekday,
+      //hour: hours,
+      //minute: minutes,
+      //repeats: true,
+      seconds: 2
     },
   });
   console.log("notif id on scheduling",id)
@@ -91,15 +91,25 @@ const schedulePushNotification = (
 }
 
 //testing function
-async function sendPushNotification() {
-  await Notifications.scheduleNotificationAsync({
+const sendPushNotification = (trackerName,
+  bodySlot,
+  time,) => {
+  time = new Date(time.getTime());
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const id = Notifications.scheduleNotificationAsync({
     content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
+      title: '🔔 ' + trackerName + ' 🔔',
+      body: bodySlot + time.getHours() + ':' + time.getMinutes(),
     },
-    trigger: { seconds: 2 },
+    trigger: {
+      hour: hours,
+      minute: minutes,
+      repeats: true,
+    },
   });
+  console.log("notif id on scheduling",id)
+  return id;
 }
 
   
