@@ -14,7 +14,7 @@ import { trackerDatabase } from './components/trackerDatabase';
 //function checks if date has changed
 //if it has, it changes date saved in database
 //and resets trackers to show up for the new day
-async function checkDate () {
+{/*async function checkDate () {
   var day = String(new Date().getDate()).padStart(2, '0'); 
   var month = String(new Date().getMonth() + 1).padStart(2, '0'); 
   var year = new Date().getFullYear(); 
@@ -22,12 +22,12 @@ async function checkDate () {
 
   var onfileDate = await dateDatabase.getDate();  
 
-  if(onfileDate != currentDate){
+ if(onfileDate != currentDate){
     trackerDatabase.resetDay(); 
     dateDatabase.editDate(currentDate, onfileDate); 
     console.log( "date changed to: ", currentDate); 
   }
-}
+}*/}
 
 export default function App() {
   
@@ -42,7 +42,6 @@ export default function App() {
     
     return null;
   } else {
-    checkDate(); 
     return (
       <SafeAreaProvider>
           <Navigation colorScheme={colorScheme} />

@@ -78,7 +78,7 @@ export default function UserScreen() {
             <View style={[styles.modalView, {backgroundColor: Colors[colorScheme].items }]}>
             <View style={{backgroundColor:'transparent', padding: 10, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
               <Text style={{color: Colors[colorScheme].itemtext, fontSize: 25}}> 
-                Are you sure you want to delete all trackers?</Text> 
+                Are you sure you want to delete?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={Colors[colorScheme].background} size={40} onPress={() => deleteTrackers()}> Yes, Delete </Button>

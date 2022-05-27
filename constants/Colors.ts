@@ -15,6 +15,7 @@ export default {
     radioButton: '#3a5140',
     inputBackground: '#f1f2f3',
     inputText: '#3a5140', 
+    date: '#6e9979',
   },
   dark: {
     text: '#f1f2f3',
@@ -32,5 +33,6 @@ export default {
     switchColorOn: '#6e9979', 
     switchThumbOff: '#f1f2f3',
     switchThumbOn: '#aad5b5', 
+    date: '#6e9979'
   }
 };

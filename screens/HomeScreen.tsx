@@ -15,6 +15,8 @@ import useColorScheme from '../hooks/useColorScheme';
 import RenderTracker from '../components/RenderTracker';
 import { AntDesign } from '@expo/vector-icons';
 
+import { dateDatabase } from '../components/dateDatabase';
+
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
   const colorScheme = useColorScheme();
@@ -34,6 +36,26 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       monthName  + ' ' + date + ', ' + year
     );
   },[]);
+
+  useEffect(() =>{
+    checkDate(); 
+  })
+
+  async function checkDate () {
+    var day = String(new Date().getDate()).padStart(2, '0'); 
+    var month = String(new Date().getMonth() + 1).padStart(2, '0'); 
+    var year = new Date().getFullYear(); 
+    var currentDate = day + '-' + month + '-' + year; 
+  
+    var onfileDate = await dateDatabase.getDate();  
+  
+    if(onfileDate != currentDate){
+      resetAll(); 
+      refreshTrackers(); 
+      dateDatabase.editDate(currentDate, onfileDate); 
+      console.log( "date changed to: ", currentDate); 
+    }
+  }
 
   function useDone (trackerID) {
     setDone(1, trackerID); 
