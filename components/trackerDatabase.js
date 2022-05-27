@@ -81,7 +81,7 @@ const editDone = (done, trackerID) => {
 //reset day
 const resetDay = () => {
   db.transaction ( tx=> {
-    tx.executeSql('update trackers set done = (?)', [0] );
+    tx.executeSql('update trackers set done = (?) where done = (?)', [0, 1] );
   },
   (t, error) => { console.log("db error reset trackers"); console.log(error);},
   //if inserting is a success, run function (for refreshTrackers in context)

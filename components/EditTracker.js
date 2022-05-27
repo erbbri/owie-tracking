@@ -121,15 +121,17 @@ export default class EditTracker extends Component {
       </Modal>
 
       <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
-      <View style={{marginLeft: '2%'}}></View>
+      <View style={{marginLeft: '2%', backgroundColor: 'transparent', flexDirection: 'row', 
+        width: '99%', paddingTop: 5, paddingBottom: 5, alignItems: 'center'}}>
       <Checkbox
         color={'#3a5140'}
         status={'checked'}
         disabled={true}
       ></Checkbox>
-      <Text style={{color: this.props.color, fontSize: 22}}>{this.props.trackerName}</Text>
+      <Text style={{color: this.props.color, fontSize: 22, width: '64%', paddingLeft: 12}}>{this.props.trackerName}</Text>
       <IconButton color={this.props.color} icon="circle-edit-outline" onPress={()=>this.setEditCheckModalVisible(true)} />
       <IconButton color={this.props.color} icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
+      </View>
       </View>
       </View>
     );
@@ -187,13 +189,11 @@ export default class EditTracker extends Component {
        
         <View style={[styles.textview, {backgroundColor: this.props.backgroundColor}]}>
         <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
-          flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center',}}>
-        <Text style={{ color: this.props.color, fontSize: 22}}>   {this.props.trackerName}</Text>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', width: '80%', justifyContent: 'flex-end',}}>
+          flexDirection: 'row', width: '99%', justifyContent: 'space-between', alignItems: 'center'}}>
+        <Text style={{ color: this.props.color, fontSize: 22, width: '75%', paddingLeft: 12}}>{this.props.trackerName}</Text>
+        <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end',}}>
           <IconButton color={this.props.color} icon="circle-edit-outline" onPress={()=>this.setEditCheckModalVisible(true)} />
           <IconButton color={this.props.color} icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
-        </View>
-        <View style={{backgroundColor: 'transparent', marginRight: 10, alignSelf: 'flex-end'}}>
         </View>
         </View>
         <View style={{backgroundColor: 'transparent', borderWidth: 2, borderColor: 'gray', 
@@ -223,6 +223,7 @@ export default class EditTracker extends Component {
         >
           <View style={styles.centeredView}>
             <View style={[styles.modalView, {backgroundColor: this.props.backgroundColor}]}>
+            <Text style={{color: this.props.color, fontSize: 25, alignSelf: 'center', marginTop: 10}}>Rename Tracker:</Text>
             <View style={{backgroundColor:'transparent', flexDirection: 'row', alignItems: 'center', flex: 2}}>
              <View style={{ marginLeft: 40, marginTop: 40, borderWidth: 2, borderColor: 'gray', backgroundColor: 'transparent', width: '70%'}}>
               <TextInput style={{fontSize: 22}} 
@@ -262,9 +263,9 @@ export default class EditTracker extends Component {
 
         <View style={[styles.sliderview, {backgroundColor: this.props.backgroundColor}]}>
         <View style={{backgroundColor: this.props.backgroundColor, alignSelf: 'flex-start', paddingBottom: 2,
-          flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center',}}>
-        <Text style={{ color: this.props.color, fontSize: 22}}>   {this.props.trackerName}</Text>
-        <View style={{backgroundColor: 'transparent', flexDirection: 'row', width: '80%', justifyContent: 'flex-end',}}>
+          flexDirection: 'row', justifyContent: 'space-between', width: '99%', alignItems: 'center',}}>
+        <Text style={{ color: this.props.color, fontSize: 22, paddingLeft: 12, width: '75%', paddingLeft: 12}}>{this.props.trackerName}</Text>
+        <View style={{backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'flex-end',}}>
           <IconButton color={this.props.color} icon="circle-edit-outline" onPress={()=>this.setEditSliderModalVisible(true)} />
           <IconButton color={this.props.color} icon="trash-can-outline" onPress={()=>this.setDeleteModalVisible(true)} />
         </View>
@@ -346,6 +347,7 @@ EditTracker.propTypes = {
       borderColor: 'black',
       borderWidth: 1,
       flex: 1,
+      
     },
 
     slider: {

@@ -81,7 +81,7 @@ export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
               })}>
               <AntDesign
                 name="pluscircle"
-                size={40}
+                size={60}
                 color= {Colors[colorScheme].tint}
                 style={{marginRight: 15, borderRadius: 100, backgroundColor: Colors[colorScheme].background }}               
               />

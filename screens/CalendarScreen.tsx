@@ -251,7 +251,10 @@ const onModalPress =()=> {
         </RenderHistory>
       ))}
       </ScrollView>
-      <View style={styles.bottom}>
+      <View style={[styles.bottom]}>
+        <View style={{ backgroundColor: Colors[colorScheme].background, 
+          width: '80%', height: '100%', borderRadius: 100,
+          }}> 
         <Pressable
               onPress={() => onPressPrint()}
               style={({ pressed }) => ({
@@ -261,10 +264,11 @@ const onModalPress =()=> {
                 name="pdffile1"
                 size={40}
                 color= {Colors[colorScheme].tint}
-                style={{ marginRight: 15}}
+                style={{ alignSelf: 'center', paddingTop: 10}}
               />
             </Pressable>
-            </View>
+          </View>
+        </View>
       <EditScreenInfo path="/screens/CalendarScreen.tsx" />
     </SafeAreaView>
   );
@@ -303,7 +307,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     alignSelf: 'flex-end',
-    backgroundColor: 'transparent', 
+    backgroundColor: 'transparent',
+    height: '9%',
+    width: '20%',
   },
   historyStyle: {
     alignSelf: 'center', 
