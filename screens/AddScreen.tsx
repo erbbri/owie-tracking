@@ -89,7 +89,6 @@ export default function AddScreen(this: any, { navigation }) {
 
   const insertTracker = (name, type, min, max, notifID) => {
     addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
-    refreshTrackers(); 
     goBack(); 
   }
 

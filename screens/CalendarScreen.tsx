@@ -59,6 +59,7 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const [checkedState, setCheckedState] = useState(
     new Array(trackers.length + 1).fill('unchecked')
 );
+
   const [trackerNames, setTrackerNames] = useState([])
 
 const setChecked =(item)=> {
@@ -72,7 +73,6 @@ const setChecked =(item)=> {
 
 const handleChecked = (position) => {
   const updatedCheckedState = Array.from(checkedState); 
-  console.log(updatedCheckedState); 
   updatedCheckedState.forEach((item, index, array) => {
     console.log("position", position)
     console.log(index) 
@@ -80,21 +80,26 @@ const handleChecked = (position) => {
       array[index] = setChecked(item)
     }}
 )
- console.log(updatedCheckedState); 
     setCheckedState(updatedCheckedState); 
+    console.log(checkedState); 
 };
-{/*
+
 const onModalPress =()=> {
-  checkedState.ForEach((item, index, array) => {
-    if(item == 'checked'){
-      trackerNames.push(trackers[index].name);
-    }
-  }{
-  console.log(trackerNames); 
-  setModalVisible(false)
+  const tempTrackerNames = []; 
+  trackers.map((tracker) => (
+    checkedState.forEach((item, index) => {
+      //console.log(item); 
+      if(tracker.id == index && item === 'checked'){
+        var temp = tracker.name;
+        tempTrackerNames.push(temp);
+      }
+    })
+  ))
+  setTrackerNames(tempTrackerNames); 
+  console.log(tempTrackerNames); 
+  setModalVisible(false);
 }
 
-*/}
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS == 'ios');
@@ -129,6 +134,11 @@ const onModalPress =()=> {
 
   //checks that entries is defined (it is)
   if (typeof entries !== 'undefined'){
+  
+    while(trackers.length >= checkedState.length){
+      checkedState.push('unchecked'); 
+    }
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Modal 
@@ -181,7 +191,7 @@ const onModalPress =()=> {
 
             </View>
             <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
-              <IconButton icon="close" style={{backgroundColor: Colors[colorScheme].inputText}} size={30} onPress={() => setModalVisible(!modalVisible)}/>
+              <IconButton icon="close" style={{backgroundColor: Colors[colorScheme].inputText}} size={30} onPress={() => onModalPress()}/>
             </View>
           </View>
         </View>
