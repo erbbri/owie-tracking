@@ -21,6 +21,7 @@ import GenerateHTML from '../components/GenerateHTML';
 import { Checkbox, IconButton } from 'react-native-paper';
 
 import { TrackersContext } from '../context/TrackersContext';
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const htmlstart = `
 <html>
@@ -53,7 +54,8 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('Empty');
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
 
   //for checklist
   const [checkedState, setCheckedState] = useState(
@@ -95,18 +97,58 @@ const onModalPress =()=> {
 }
 
 */}
-  const onChange = (event, selectedDate) => {
+  const onChangeStart = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS == 'ios');
     setDate(currentDate);
-
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
-    setText(fDate + '\n')
+    let monthName = months[tempDate.getMonth()];
 
+    let ensureDoubleDigit = (tempDate.getMonth()+1);
+
+    if (ensureDoubleDigit < 10) {
+      let DoubleDigit = "0" + ensureDoubleDigit.toString();
+      let sqlStartDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
+      
+      console.log(sqlStartDate);
+    }
+    else{
+      let sqlStartDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
+      
+      console.log(sqlStartDate);
+    }
+
+    let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
+    setText1(fDate + '\n')
     console.log(fDate)
   }
   
+  const onChangeEnd = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS == 'ios');
+    setDate(currentDate);
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let tempDate = new Date(currentDate);
+    let monthName = months[tempDate.getMonth()];
+    let ensureDoubleDigit = (tempDate.getMonth()+1);
+
+    if (ensureDoubleDigit < 10) {
+      let DoubleDigit = "0" + ensureDoubleDigit.toString();
+      let sqlEndDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
+      console.log(sqlEndDate);
+    }
+    else{
+      let sqlEndDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
+      console.log(sqlEndDate);
+    }
+
+    let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
+    setText2(fDate + '\n')
+    console.log(fDate)
+  }
+
+
   const showMode = (currentMode)=> {
     setShow(true);
     setMode(currentMode);
@@ -133,16 +175,25 @@ const onModalPress =()=> {
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Modal 
           transparent={true}
-          visible={modalVisible}
           
+          visible={modalVisible}
+          propagateSwipe={true}
+          swipeDirection={['down']}
           onRequestClose={() => {      
             setModalVisible(!modalVisible)
           }}>
-        
+
+<View style={ [styles.centeredView,
+          {flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'}]}>
+
         <View style={styles.centeredView}>
+    
           <View style={[styles.modalView, {backgroundColor: '#f1f2f3'}]}>
 
-            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={{fontSize: 25, color: Colors[colorScheme].itemtext}}>Tracker Names: </Text>
             </View> 
             {trackers.map((tracker) => (
@@ -157,35 +208,51 @@ const onModalPress =()=> {
             <Text style={{color: Colors[colorScheme].itemtext, fontSize: 20}}>{tracker.name}</Text>
             </View>
           ))}
-            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontSize: 25, color: Colors[colorScheme].itemtext}}>Date Range: </Text>
             </View>
           
-            <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-start', justifyContent: 'flex-end'}}>
-              <Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>
+            <View style={{ backgroundColor: 'transparent',  alignItems: 'center', justifyContent: 'flex-end'}}>
+              {/*<Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>*/}
               <View style={styles.fixToText}>
+                <View>
                 <Button title='Begin Date' color='#3a5140' onPress={() => showMode('date')} />
-              
-                <Button title='End Date' color='#3a5140' onPress={() => showMode('date')} />
-              </View>
-              {
+                <Text style={{fontSize: 20}}>{text1}</Text>
+                {
                 show && (
                   <DateTimePicker
-                  testID='dateTimePicker'
+                  testID='dateTimePicker1'
                   value={date}
                   mode={mode}
                   is24Hour={false}
                   display='default'
-                  onChange={onChange}
+                  onChange={onChangeStart}
                 />)} 
+                </View>
+                <View>
+                <Button title='End Date'  color='#3a5140' onPress={() => showMode('date')} />
+                <Text style={{fontSize: 20}}>{text2}</Text>
+                {
+                show && (
+                  <DateTimePicker
+                  testID='dateTimePicker2'
+                  value={date}
+                  mode={mode}
+                  is24Hour={false}
+                  display='default'
+                  onChange={onChangeEnd}
+                />)} 
+                </View>
+              </View>
+
 
             </View>
             <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
-              <IconButton icon="close" style={{backgroundColor: Colors[colorScheme].inputText}} size={30} onPress={() => setModalVisible(!modalVisible)}/>
+              <IconButton icon="check" style={{backgroundColor: 'transparent' }} color='#3a5140'  size={40} onPress={() => setModalVisible(!modalVisible)}/>
             </View>
           </View>
         </View>
-        
+      </View>
       </Modal>
       <View
         style={{
@@ -303,8 +370,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    
     backgroundColor: 'transparent',
+    width: '100%',
+    
+    
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -319,7 +389,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 20,
     width: '90%',
-    height: '30%',
+    height: '75%',
     //padding: 20,
     //alignItems: "center",
     shadowColor: "#000",
@@ -332,7 +402,13 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   fixToText:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '60%',
+    
+    //flexDirection: 'column',
+    //justifyContent: 'space-between',
+    //alignContent: 'center',
+    backgroundColor: 'transparent',
+    
+
   },
 });
