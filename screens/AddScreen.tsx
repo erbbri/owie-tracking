@@ -198,9 +198,9 @@ export default function AddScreen(this: any, { navigation }) {
               </View>
               ]}
               <View style={{flexDirection: 'row', paddingTop: 10, paddingBottom: 20}}>
-              <Text style={styles.time}>Add Notification:</Text>
+              <Text style={[styles.time,  {paddingBottom: 12, paddingLeft: 10}]}>Add Notification:</Text>
                <Switch
-                style={styles.time}
+                style={[styles.time, ]}
                 trackColor={{true: '#3a5140', false: 'grey'}}
                 thumbColor={values.switch ? '#f1f2f3' : '#f4f3f4'}
                 value = {values.switch}

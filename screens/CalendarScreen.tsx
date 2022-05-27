@@ -115,11 +115,16 @@ const onModalPress =()=> {
 
 
   const onPressPrint =()=>{
-    var htmlMiddle; 
+    var htmlMiddle, htmlComplete; 
     htmlMiddle = GenerateHTML(entries);
     //removes 'undefined' which is for some reason there
+    if(htmlMiddle){
     htmlMiddle = htmlMiddle.slice(9); 
-    var htmlComplete = htmlstart + htmlMiddle + htmlend; 
+    htmlComplete = htmlstart + htmlMiddle + htmlend; 
+    }
+    else{
+    htmlComplete = htmlstart + htmlend; 
+    }
     console.log(htmlComplete);
     Print.printAsync({
       html: htmlComplete
