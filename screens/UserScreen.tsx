@@ -182,9 +182,9 @@ export default function UserScreen() {
           cloud unless you upload your exported PDF there! 
           {'\n'}{'\n'}
           <Text style={{fontWeight:'bold'}}>Does this violate HIPAA?</Text>
-          {'\n'}Nope! Becuase only you have access to your data and would have
-          to physically have to export and send/bring that data to your health 
-          provider we do not have to comply to HIPAA. 
+          {'\n'}Nope! Because only you have access to your data and you would have
+          to physically export that data if you would like to show it to your health 
+          provider. 
           </Text>
         </View>
         
