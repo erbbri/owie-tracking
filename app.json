@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "owie-tracking",
-    "slug": "owie-tracking",
+    "name": "owietracking",
+    "slug": "owietracking",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/appLogo.png",
