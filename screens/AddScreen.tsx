@@ -107,10 +107,12 @@ export default function AddScreen(this: any, { navigation }) {
   })
 
 
-  const insertTracker = (name, type, min, max, notifID) => {
+  const insertTracker = (name, type, min, max, notifID, push) => {
     addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
     refreshTrackers(); 
-    sendPushNotification(name, textBody, date);
+    if(push === true){
+      sendPushNotification(name, textBody, date);
+    }
     goBack();
   }
 
@@ -127,7 +129,7 @@ export default function AddScreen(this: any, { navigation }) {
       <Formik
         validationSchema={trackerValidationSchema}
         initialValues={{ name: '', type: '', min: '0', max: '10', switch: false}}
-        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max)}
+        onSubmit={values => insertTracker(values.name, values.type, values.min, values.max, values.switch)}
         validateOnMount={true}
       >
 
