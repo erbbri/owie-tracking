@@ -85,18 +85,23 @@ const handleChecked = (position) => {
  console.log(updatedCheckedState); 
     setCheckedState(updatedCheckedState); 
 };
-{/*
+
 const onModalPress =()=> {
-  checkedState.ForEach((item, index, array) => {
-    if(item == 'checked'){
-      trackerNames.push(trackers[index].name);
-    }
-  }{
-  console.log(trackerNames); 
-  setModalVisible(false)
+  const tempTrackerNames = []; 
+  trackers.map((tracker) => (
+    checkedState.forEach((item, index) => {
+      //console.log(item); 
+      if(tracker.id == index && item === 'checked'){
+        var temp = tracker.name;
+        tempTrackerNames.push(temp);
+      }
+    })
+  ))
+  setTrackerNames(tempTrackerNames); 
+  console.log(tempTrackerNames); 
+  setModalVisible(false);
 }
 
-*/}
   const onChangeStart = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS == 'ios');
@@ -171,6 +176,11 @@ const onModalPress =()=> {
 
   //checks that entries is defined (it is)
   if (typeof entries !== 'undefined'){
+
+    while(trackers.length >= checkedState.length){
+      checkedState.push('unchecked'); 
+    }
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Modal 
@@ -248,7 +258,7 @@ const onModalPress =()=> {
 
             </View>
             <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
-              <IconButton icon="check" style={{backgroundColor: 'transparent' }} color='#3a5140'  size={40} onPress={() => setModalVisible(!modalVisible)}/>
+              <IconButton icon="check" style={{backgroundColor: 'transparent' }} color='#3a5140'  size={40} onPress={() => onModalPress()}/>
             </View>
           </View>
         </View>

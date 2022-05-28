@@ -17,10 +17,14 @@ export default class RenderHistory extends Component {
     static contextType = HistoryContext; 
 
     render(){  
+        const tempDate = this.props.date; 
+        const dateArray = tempDate.split("-"); 
+        const newDate = dateArray[0] + "-" + dateArray[1] + "-" + dateArray[2]; 
+
         if(this.props.trackerType == "checkbox"){
          return (
           <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
-          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {this.props.date} </Text>
+          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {newDate} </Text>
           <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginLeft: '2%'}}></View>
           <AntDesign
@@ -38,7 +42,7 @@ export default class RenderHistory extends Component {
       if(this.props.trackerType == 'text'){
         return(
           <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
-          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {this.props.date} </Text>
+          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {newDate} </Text>
           <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginLeft: '2%'}}></View>
           <Text style={{color: this.props.color, fontSize: 22, marginTop: 2}}>{this.props.trackerName} </Text>
@@ -52,7 +56,7 @@ export default class RenderHistory extends Component {
       if(this.props.trackerType == 'slider'){
         return(
           <View style={[styles.view, {backgroundColor: this.props.backgroundColor}]}>
-          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {this.props.date} </Text>
+          <Text style={{color: this.props.dateColor, fontSize: 22, marginTop: 2}}> {newDate} </Text>
           <View style={{backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginLeft: '2%'}}></View>
           <Text style={{color: this.props.color, fontSize: 22, marginTop: 2}}>{this.props.trackerName} </Text>
