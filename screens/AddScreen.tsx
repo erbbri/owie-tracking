@@ -107,16 +107,16 @@ export default function AddScreen(this: any, { navigation }) {
   })
 
 
-  const insertTracker = (name, type, min, max, notifID, push) => {
-    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
-    if(push === true){
+  const insertTracker = (name, type, min, max, switchvalue) => {
+    var notifID = 0; 
+    if(switchvalue == true){
       sendPushNotification(name, textBody, date);
     }
+    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
     goBack();
   }
 
   const goBack = () => {
-
     navigation.navigate('Root', { screen: 'Edit' });
     console.log('go back');
   }
