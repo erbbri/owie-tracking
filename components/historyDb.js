@@ -23,12 +23,27 @@ const getEntries = (setEntriesFunc) => {
 }
 
 //search history - setEntryFunc for useState
-const searchForEntries = (setEntriesFunc) => {
+const searchForEntries = (searchPhraseArray, setEntriesFunc) => {
+  var sql = 'select * from entries where trackerName = (?) '
+  if(searchPhraseArray){
+  var count = searchPhraseArray.length; 
+  var i = count; 
+  while (i > 0){
+    if (i != 1){
+      sql += 'or trackerName = (?)'
+    }
+    i = i-1
+  }
+}
+else {
+    sql = 'select * from entries'; 
+  }
+  console.log(sql); 
   db.transaction(
     tx => {
       tx.executeSql(
-        'select * from entries',
-        [],
+        sql,
+        searchPhraseArray,
         (_, { rows: { _array } }) => {
           setEntriesFunc(_array)
         }

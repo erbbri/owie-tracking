@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { HistoryContext } from '../context/HistoryContext';
 import RenderHistory from '../components/RenderHistory';
 import { colors } from 'react-native-elements';
@@ -45,7 +45,7 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const colorScheme = useColorScheme();
 
   //use context
-  const { entries, filteredEntries } = useContext(HistoryContext);
+  const { entries, filteredEntries, searchEntries } = useContext(HistoryContext);
   const { trackers } = useContext(TrackersContext); 
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -59,9 +59,8 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
 
   //for checklist
   const [checkedState, setCheckedState] = useState(
-    new Array(trackers.length + 1).fill('unchecked')
+    new Array(trackers.length + 1).fill('checked')
 );
-  const [trackerNames, setTrackerNames] = useState([])
 
 const setChecked =(item)=> {
   if(item === 'checked'){
@@ -88,6 +87,7 @@ const handleChecked = (position) => {
 
 const onModalPress =()=> {
   const tempTrackerNames = []; 
+  var searchPhrase;  
   trackers.map((tracker) => (
     checkedState.forEach((item, index) => {
       //console.log(item); 
@@ -97,8 +97,8 @@ const onModalPress =()=> {
       }
     })
   ))
-  setTrackerNames(tempTrackerNames); 
   console.log(tempTrackerNames); 
+  searchEntries(tempTrackerNames); 
   setModalVisible(false);
 }
 
@@ -178,8 +178,13 @@ const onModalPress =()=> {
   if (typeof entries !== 'undefined'){
 
     while(trackers.length >= checkedState.length){
-      checkedState.push('unchecked'); 
+      checkedState.push('checked'); 
     }
+
+  {/*  useEffect(()=> {
+      var blankArray = []; 
+      searchEntries(blankArray); 
+    }) */}
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
@@ -311,7 +316,7 @@ const onModalPress =()=> {
                 /> 
       </Pressable>
       
-      {entries.map((entry) => (
+      {filteredEntries.map((entry) => (
         <RenderHistory key={entry.id} trackerType={entry.trackerType} trackerName={entry.trackerName} trackerID={entry.trackerID}
         date={entry.date} checked={entry.checked} scale={entry.scale} input={entry.input}
         color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items} dateColor={Colors[colorScheme].date}>
