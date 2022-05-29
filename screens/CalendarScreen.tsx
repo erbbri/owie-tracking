@@ -51,11 +51,13 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const [modalVisible, setModalVisible] = useState(false);
   const [isSelected, setSelection] = useState(false);
 
-  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [text1, setText1] = useState('');
-  const [text2, setText2] = useState('');
+  const [showStart, setShowStart] = useState(false);
+  const [showEnd, setShowEnd] = useState(false);
+  const [textStart, setTextStart] = useState('');
+  const [textEnd, setTextEnd] = useState('');
 
   //for checklist
   const [checkedState, setCheckedState] = useState(
@@ -98,20 +100,20 @@ const onModalPress =()=> {
 
 */}
   const onChangeStart = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS == 'ios');
-    setDate(currentDate);
+    const currentDate = selectedDate || startDate;
+    setShowStart(Platform.OS == 'ios');
+    setStartDate(currentDate);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let tempDate = new Date(currentDate);
     let monthName = months[tempDate.getMonth()];
-
     let ensureDoubleDigit = (tempDate.getMonth()+1);
-
+    
     if (ensureDoubleDigit < 10) {
       let DoubleDigit = "0" + ensureDoubleDigit.toString();
       let sqlStartDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
       
       console.log(sqlStartDate);
+      
     }
     else{
       let sqlStartDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
@@ -120,19 +122,19 @@ const onModalPress =()=> {
     }
 
     let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
-    setText1(fDate + '\n')
+    setTextStart(fDate + '\n')
     console.log(fDate)
   }
   
   const onChangeEnd = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS == 'ios');
-    setDate(currentDate);
+    const currentDate = selectedDate || endDate;
+    setShowEnd(Platform.OS == 'ios');
+    setEndDate(currentDate);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let tempDate = new Date(currentDate);
     let monthName = months[tempDate.getMonth()];
     let ensureDoubleDigit = (tempDate.getMonth()+1);
-
+    
     if (ensureDoubleDigit < 10) {
       let DoubleDigit = "0" + ensureDoubleDigit.toString();
       let sqlEndDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
@@ -144,13 +146,17 @@ const onModalPress =()=> {
     }
 
     let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
-    setText2(fDate + '\n')
+    setTextEnd(fDate + '\n')
     console.log(fDate)
   }
 
 
-  const showMode = (currentMode)=> {
-    setShow(true);
+  const showModeStart = (currentMode)=> {
+    setShowStart(true);
+    setMode(currentMode);
+  }
+  const showModeEnd = (currentMode)=> {
+    setShowEnd(true);
     setMode(currentMode);
   }
 
@@ -174,8 +180,7 @@ const onModalPress =()=> {
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Modal 
-          transparent={true}
-          
+          transparent={true} 
           visible={modalVisible}
           propagateSwipe={true}
           swipeDirection={['down']}
@@ -216,27 +221,27 @@ const onModalPress =()=> {
               {/*<Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>*/}
               <View style={styles.fixToText}>
                 <View>
-                <Button title='Begin Date' color='#3a5140' onPress={() => showMode('date')} />
-                <Text style={{fontSize: 20}}>{text1}</Text>
+                <Button title='Begin Date' color='#3a5140'  onPress={() => showModeStart('startDate')} />
+                <Text style={{fontSize: 20}}>{textStart}</Text>
                 {
-                show && (
+                showStart && (
                   <DateTimePicker
                   testID='dateTimePicker1'
-                  value={date}
+                  value={startDate}
                   mode={mode}
                   is24Hour={false}
                   display='default'
                   onChange={onChangeStart}
                 />)} 
                 </View>
-                <View>
-                <Button title='End Date'  color='#3a5140' onPress={() => showMode('date')} />
-                <Text style={{fontSize: 20}}>{text2}</Text>
+                <View style={{backgroundColor:'transparent'}}>
+                <Button title='End Date'  color='#3a5140' onPress={() => showModeEnd('endDate')} />
+                <Text style={{fontSize: 20}}>{textEnd}</Text>
                 {
-                show && (
+                showEnd && (
                   <DateTimePicker
                   testID='dateTimePicker2'
-                  value={date}
+                  value={endDate}
                   mode={mode}
                   is24Hour={false}
                   display='default'
