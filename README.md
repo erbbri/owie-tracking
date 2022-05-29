@@ -17,7 +17,8 @@ scan with expo go <br>
 known error - keys <br>
 
 
-## Usage 
+## Sources Used
+
 
 ## About the Project
 This project was started to fullfill our senior Software Engineering final project requirement. A collaborative effort between Cypress Payne, Abigail Joppa, and Bridget Erb
