@@ -59,6 +59,9 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const [textStart, setTextStart] = useState('');
   const [textEnd, setTextEnd] = useState('');
 
+  const [formatStartDate, setFormatStartDate] = useState(''); 
+  const [formatEndDate, setFormatEndDate] = useState(''); 
+
   //for checklist
   const [checkedState, setCheckedState] = useState(
     new Array(trackers.length + 1).fill('checked')
@@ -89,7 +92,14 @@ const handleChecked = (position) => {
 
 const onModalPress =()=> {
   const tempTrackerNames = []; 
-  var searchPhrase;  
+  if(formatStartDate != '' && formatEndDate != ''){
+    tempTrackerNames.push(1); 
+    tempTrackerNames.push(formatStartDate); 
+    tempTrackerNames.push(formatEndDate); 
+  }
+  else {
+    tempTrackerNames.push(0); 
+  }
   trackers.map((tracker) => (
     checkedState.forEach((item, index) => {
       //console.log(item); 
@@ -118,12 +128,13 @@ const onModalPress =()=> {
       let sqlStartDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
       
       console.log(sqlStartDate);
-      
+      setFormatStartDate(sqlStartDate); 
     }
     else{
       let sqlStartDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
       
       console.log(sqlStartDate);
+      setFormatStartDate(sqlStartDate); 
     }
 
     let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
@@ -144,10 +155,12 @@ const onModalPress =()=> {
       let DoubleDigit = "0" + ensureDoubleDigit.toString();
       let sqlEndDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
       console.log(sqlEndDate);
+      setFormatEndDate(sqlEndDate); 
     }
     else{
       let sqlEndDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
       console.log(sqlEndDate);
+      setFormatEndDate(sqlEndDate); 
     }
 
     let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
@@ -187,10 +200,10 @@ const onModalPress =()=> {
       checkedState.push('checked'); 
     }
 
-  {/*  useEffect(()=> {
+    useEffect(()=> {
       var blankArray = []; 
       searchEntries(blankArray); 
-    }) */}
+    }, []);
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
