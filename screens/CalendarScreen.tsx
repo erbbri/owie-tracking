@@ -259,6 +259,7 @@ const onModalPress =()=> {
                   mode={mode}
                   is24Hour={false}
                   display='default'
+                  maximumDate={new Date()}
                   onChange={onChangeStart}
                 />)} 
                 </View>
@@ -273,6 +274,7 @@ const onModalPress =()=> {
                   mode={mode}
                   is24Hour={false}
                   display='default'
+                  
                   onChange={onChangeEnd}
                 />)} 
                 </View>
