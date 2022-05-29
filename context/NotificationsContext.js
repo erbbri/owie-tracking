@@ -91,7 +91,7 @@ const schedulePushNotification = (
 }
 
 //testing function
-const sendPushNotification = (trackerName,
+const sendPushNotification = async (trackerName,
   bodySlot,
   time,) => {
   time = new Date(time.getTime());
@@ -108,8 +108,11 @@ const sendPushNotification = (trackerName,
       repeats: true,
     },
   });
-  console.log("notif id on scheduling",id)
-  return id;
+    
+  const notifID = await id; 
+ 
+  console.log("notif id on scheduling", notifID)
+  return notifID;
 }
 
   

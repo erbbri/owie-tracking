@@ -48,9 +48,9 @@ export default class EditTracker extends Component {
     this.setState({DeleteModalVisible: visible})
   }
 
-  remove(trackerID){
+  async remove(trackerID, notifID){
       const context = this.context; 
-      context.removeTracker(trackerID); 
+      await context.removeTracker(trackerID, notifID); 
       context.refreshTrackers(); 
   }
 
@@ -113,7 +113,7 @@ export default class EditTracker extends Component {
                 Are you sure you want to delete {this.props.trackerName}?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
-            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID)}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID, this.props.notifID)}> Yes, Delete </Button>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color}  size={40} onPress={() => this.setDeleteModalVisible(!DeleteModalVisible)}> No Go Back</Button>
             </View>
             </View>
@@ -180,7 +180,7 @@ export default class EditTracker extends Component {
                 Are you sure you want to delete {this.props.trackerName}?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
-            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID)}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID, this.props.notifID)}> Yes, Delete </Button>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color}  size={40} onPress={() => this.setDeleteModalVisible(!DeleteModalVisible)}> No Go Back</Button>
             </View>
             </View>
@@ -254,7 +254,7 @@ export default class EditTracker extends Component {
                 Are you sure you want to delete {this.props.trackerName}?</Text> 
              </View> 
             <View style={{flexDirection: 'row', backgroundColor: 'transparent', justifyContent: 'space-around', margin: 3, flex: 1 }}>
-            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID)}> Yes, Delete </Button>
+            <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color} size={40} onPress={() => this.remove(this.props.trackerID, this.props.notifID)}> Yes, Delete </Button>
             <Button style={{width: '48%', borderRadius: 15, justifyContent: 'center'}} mode="contained" color={this.props.color}  size={40} onPress={() => this.setDeleteModalVisible(!DeleteModalVisible)}> No Go Back</Button>
             </View>
             </View>
@@ -305,6 +305,7 @@ EditTracker.propTypes = {
     trackerType: PropTypes.string,
     trackerName: PropTypes.string,
     trackerID: PropTypes.any, 
+    notifID: PropTypes.any,
     sliderMin: PropTypes.any,
     sliderMax: PropTypes.any,
     color: PropTypes.string,

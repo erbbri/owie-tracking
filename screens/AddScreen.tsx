@@ -107,12 +107,16 @@ export default function AddScreen(this: any, { navigation }) {
   })
 
 
-  const insertTracker = (name, type, min, max, switchvalue) => {
+  const insertTracker = async (name, type, min, max, switchvalue) => {
     var notifID = 0; 
     if(switchvalue == true){
-      sendPushNotification(name, textBody, date);
+      const notifID = await sendPushNotification(name, textBody, date);
+      console.log(notifID); 
+      addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
     }
-    addNewTracker(name, type, parseInt(min), parseInt(max), notifID, 0); 
+    else{
+    addNewTracker(name, type, parseInt(min), parseInt(max), '', 0); 
+    }
     goBack();
   }
 

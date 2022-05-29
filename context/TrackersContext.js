@@ -1,5 +1,6 @@
-import React, { useEffect, createContext, useState } from 'react';
+import React, { useEffect, useContext, createContext, useState } from 'react';
 import { trackerDatabase } from '../components/trackerDatabase';
+import { NotificationsContext } from './NotificationsContext';
 
 export const TrackersContext = createContext({});
 
@@ -12,6 +13,9 @@ export const TrackersContextProvider = props => {
 
   // Use State to store the values of trackers
   const [trackers, setTrackers] = useState(initialTrackers);
+  const notificationsContext = useContext(NotificationsContext); 
+
+  const { cancelNotification } = notificationsContext; 
 
   //refresh context from database
   useEffect(() => {
@@ -23,8 +27,12 @@ export const TrackersContextProvider = props => {
     return trackerDatabase.insertTracker(trackerName, trackerType, sliderMin, sliderMax, notifID, done, refreshTrackers)
   };
 
-  const removeTracker = (trackerID) => {
-    //insert tracker into database and refresh context
+  const removeTracker = async (trackerID, notifID) => {
+    //delete tracker and refresh context
+    if (notifID != ''){
+      await cancelNotification(notifID); 
+      console.log("notification cancelled"); 
+    }
     return trackerDatabase.deleteTracker(trackerID)
   };
 
@@ -54,7 +62,13 @@ export const TrackersContextProvider = props => {
     console.log('trackers refreshed')
   }
 
-  const removeAllTrackers = () =>{
+  const removeAllTrackers = async () =>{
+    trackers.forEach(tracker => {
+      if (tracker.notifid != ''){
+        cancelNotification(tracker.notifid); 
+        console.log("notification cancelled"); 
+      }
+    });
     trackerDatabase.dropTrackersDatabaseAsync(); 
     trackerDatabase.setupTrackersDatabaseAsync(); 
     refreshTrackers(); 

@@ -23,8 +23,8 @@ export default function UserScreen() {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   
-  const deleteTrackers =()=>{
-    removeAllTrackers(); 
+  const deleteTrackers = async ()=>{
+    await removeAllTrackers(); 
     setTrackerModalVisible(false); 
     callConfirmModal(); 
   }
