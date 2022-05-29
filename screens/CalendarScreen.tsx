@@ -247,7 +247,7 @@ const onModalPress =()=> {
           
             <View style={{ backgroundColor: 'transparent',  alignItems: 'center', justifyContent: 'flex-end'}}>
               {/*<Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>*/}
-              <View style={styles.fixToText}>
+              <View style={{width: '60%'}}>
                 <View>
                 <Button title='Begin Date' color='#3a5140'  onPress={() => showModeStart('startDate')} />
                 <Text style={{fontSize: 20}}>{textStart}</Text>
@@ -264,7 +264,7 @@ const onModalPress =()=> {
                 </View>
                 <View style={{backgroundColor:'transparent'}}>
                 <Button title='End Date'  color='#3a5140' onPress={() => showModeEnd('endDate')} />
-                <Text style={{fontSize: 20}}>{textEnd}</Text>
+                <Text style={{fontSize: 20, color: Colors[colorScheme].filterDateDisplay}}>{textEnd}</Text>
                 {
                 showEnd && (
                   <DateTimePicker
@@ -439,9 +439,7 @@ const styles = StyleSheet.create({
     
     //flexDirection: 'column',
     //justifyContent: 'space-between',
-    //alignContent: 'center',
-    backgroundColor: 'transparent',
-    
+    //alignContent: 'center',    
 
   },
 });
