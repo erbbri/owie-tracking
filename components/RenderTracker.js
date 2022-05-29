@@ -48,7 +48,7 @@ export default class RenderTracker extends Component {
     var day = String(new Date().getDate()).padStart(2, '0'); 
     var month = String(new Date().getMonth() + 1).padStart(2, '0'); 
     var year = new Date().getFullYear(); 
-    var date = day + '-' + month + '-' + year; 
+    var date = year + '-' + month + '-' + day; 
     //console.log(date)
     if(trackerType == 'checkbox'){
       context.addNewEntry(trackerID, trackerName, trackerType, date, this.state.isSelected , 0, '')

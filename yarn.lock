@@ -2422,6 +2422,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native-modalbox@^1.4.10":
+  "integrity" "sha512-QFyObrYuwf7SiKgKASAUAAs+iJPIrbpacibuMZ/b3+cYx0m0CNBzi1rK04oM4QBAPSCwK3FhMEu6QT+ZboZHXQ=="
+  "resolved" "https://registry.npmjs.org/@types/react-native-modalbox/-/react-native-modalbox-1.4.10.tgz"
+  "version" "1.4.10"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.6":
   "integrity" "sha512-z4sexbuZ7nmYsp7Z9YB5fSQoN3KFn6nZA3QsCkQLOYnVmVlxX4U22v/bM9Xx/6dOA1vClxoRZo2CFDX16uryXQ=="
   "resolved" "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz"
@@ -2430,14 +2438,7 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*":
-  "integrity" "sha512-NM6atxrefIXMLE/PyQ1bIQjQ/lWLdls3uVxItzKvNUUVZlGqgn/uGN4MarM9quSf90uSqJYPIAeAgTtBTUjhgg=="
-  "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.67.6.tgz"
-  "version" "0.67.6"
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-native@~0.64.12":
+"@types/react-native@*", "@types/react-native@~0.64.12":
   "integrity" "sha512-qgqOJub7BYsAkcg3VSL3w63cgJdLoMmAX6TSTAPL53heCzUkIdtpWqjyNRH0n7jPjxPGG1Qmsv6GSUh7IfyqRg=="
   "resolved" "https://registry.npmjs.org/@types/react-native/-/react-native-0.64.24.tgz"
   "version" "0.64.24"

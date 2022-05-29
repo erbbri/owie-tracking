@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { HistoryContext } from '../context/HistoryContext';
 import RenderHistory from '../components/RenderHistory';
 import { colors } from 'react-native-elements';
@@ -21,6 +21,7 @@ import GenerateHTML from '../components/GenerateHTML';
 import { Checkbox, IconButton } from 'react-native-paper';
 
 import { TrackersContext } from '../context/TrackersContext';
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const htmlstart = `
 <html>
@@ -44,22 +45,27 @@ export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'
   const colorScheme = useColorScheme();
 
   //use context
-  const { entries, filteredEntries } = useContext(HistoryContext);
+  const { entries, filteredEntries, searchEntries } = useContext(HistoryContext);
   const { trackers } = useContext(TrackersContext); 
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isSelected, setSelection] = useState(false);
 
-  const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState('Empty');
+  const [showStart, setShowStart] = useState(false);
+  const [showEnd, setShowEnd] = useState(false);
+  const [textStart, setTextStart] = useState('');
+  const [textEnd, setTextEnd] = useState('');
+
+  const [formatStartDate, setFormatStartDate] = useState(''); 
+  const [formatEndDate, setFormatEndDate] = useState(''); 
 
   //for checklist
   const [checkedState, setCheckedState] = useState(
-    new Array(trackers.length + 1).fill('unchecked')
+    new Array(trackers.length + 1).fill('checked')
 );
-  const [trackerNames, setTrackerNames] = useState([])
 
 const setChecked =(item)=> {
   if(item === 'checked'){
@@ -83,32 +89,92 @@ const handleChecked = (position) => {
  console.log(updatedCheckedState); 
     setCheckedState(updatedCheckedState); 
 };
-{/*
+
 const onModalPress =()=> {
-  checkedState.ForEach((item, index, array) => {
-    if(item == 'checked'){
-      trackerNames.push(trackers[index].name);
-    }
-  }{
-  console.log(trackerNames); 
-  setModalVisible(false)
+  const tempTrackerNames = []; 
+  if(formatStartDate != '' && formatEndDate != ''){
+    tempTrackerNames.push(1); 
+    tempTrackerNames.push(formatStartDate); 
+    tempTrackerNames.push(formatEndDate); 
+  }
+  else {
+    tempTrackerNames.push(0); 
+  }
+  trackers.map((tracker) => (
+    checkedState.forEach((item, index) => {
+      //console.log(item); 
+      if(tracker.id == index && item === 'checked'){
+        var temp = tracker.name;
+        tempTrackerNames.push(temp);
+      }
+    })
+  ))
+  console.log(tempTrackerNames); 
+  searchEntries(tempTrackerNames); 
+  setModalVisible(false);
 }
 
-*/}
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS == 'ios');
-    setDate(currentDate);
-
+  const onChangeStart = (event, selectedDate) => {
+    const currentDate = selectedDate || startDate;
+    setShowStart(Platform.OS == 'ios');
+    setStartDate(currentDate);
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
-    setText(fDate + '\n')
+    let monthName = months[tempDate.getMonth()];
+    let ensureDoubleDigit = (tempDate.getMonth()+1);
+    
+    if (ensureDoubleDigit < 10) {
+      let DoubleDigit = "0" + ensureDoubleDigit.toString();
+      let sqlStartDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
+      
+      console.log(sqlStartDate);
+      setFormatStartDate(sqlStartDate); 
+    }
+    else{
+      let sqlStartDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
+      
+      console.log(sqlStartDate);
+      setFormatStartDate(sqlStartDate); 
+    }
 
+    let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
+    setTextStart(fDate + '\n')
     console.log(fDate)
   }
   
-  const showMode = (currentMode)=> {
-    setShow(true);
+  const onChangeEnd = (event, selectedDate) => {
+    const currentDate = selectedDate || endDate;
+    setShowEnd(Platform.OS == 'ios');
+    setEndDate(currentDate);
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let tempDate = new Date(currentDate);
+    let monthName = months[tempDate.getMonth()];
+    let ensureDoubleDigit = (tempDate.getMonth()+1);
+    
+    if (ensureDoubleDigit < 10) {
+      let DoubleDigit = "0" + ensureDoubleDigit.toString();
+      let sqlEndDate = tempDate.getFullYear() + '-' + DoubleDigit + '-' + tempDate.getDate();
+      console.log(sqlEndDate);
+      setFormatEndDate(sqlEndDate); 
+    }
+    else{
+      let sqlEndDate = tempDate.getFullYear() + '-' + ensureDoubleDigit + '-' + tempDate.getDate();
+      console.log(sqlEndDate);
+      setFormatEndDate(sqlEndDate); 
+    }
+
+    let fDate = monthName + ' ' + tempDate.getDate() + ', '+ tempDate.getFullYear();
+    setTextEnd(fDate + '\n')
+    console.log(fDate)
+  }
+
+
+  const showModeStart = (currentMode)=> {
+    setShowStart(true);
+    setMode(currentMode);
+  }
+  const showModeEnd = (currentMode)=> {
+    setShowEnd(true);
     setMode(currentMode);
   }
 
@@ -134,20 +200,38 @@ const onModalPress =()=> {
 
   //checks that entries is defined (it is)
   if (typeof entries !== 'undefined'){
+
+    while(trackers.length >= checkedState.length){
+      checkedState.push('checked'); 
+    }
+
+    useEffect(()=> {
+      var blankArray = []; 
+      searchEntries(blankArray); 
+    }, []);
+
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
       <Modal 
-          transparent={true}
+          transparent={true} 
           visible={modalVisible}
-          
+          propagateSwipe={true}
+          swipeDirection={['down']}
           onRequestClose={() => {      
             setModalVisible(!modalVisible)
           }}>
-        
+
+<View style={ [styles.centeredView,
+          {flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'}]}>
+
         <View style={styles.centeredView}>
+    
           <View style={[styles.modalView, {backgroundColor: '#f1f2f3'}]}>
 
-            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <Text style={{fontSize: 25, color: Colors[colorScheme].itemtext}}>Tracker Names: </Text>
             </View> 
             {trackers.map((tracker) => (
@@ -162,35 +246,51 @@ const onModalPress =()=> {
             <Text style={{color: Colors[colorScheme].itemtext, fontSize: 20}}>{tracker.name}</Text>
             </View>
           ))}
-            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flex: 2}}>
+            <View style={{backgroundColor:'transparent', padding: 5, marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <Text style={{fontSize: 25, color: Colors[colorScheme].itemtext}}>Date Range: </Text>
             </View>
           
-            <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-start', justifyContent: 'flex-end'}}>
-              <Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>
-              <View style={styles.fixToText}>
-                <Button title='Begin Date' color='#3a5140' onPress={() => showMode('date')} />
-              
-                <Button title='End Date' color='#3a5140' onPress={() => showMode('date')} />
-              </View>
-              {
-                show && (
+            <View style={{ backgroundColor: 'transparent',  alignItems: 'center', justifyContent: 'flex-end'}}>
+              {/*<Text style={{fontWeight:'bold', fontSize: 20}}>{text}</Text>*/}
+              <View style={{width: '60%'}}>
+                <View>
+                <Button title='Begin Date' color='#3a5140'  onPress={() => showModeStart('startDate')} />
+                <Text style={{fontSize: 20}}>{textStart}</Text>
+                {
+                showStart && (
                   <DateTimePicker
-                  testID='dateTimePicker'
-                  value={date}
+                  testID='dateTimePicker1'
+                  value={startDate}
                   mode={mode}
                   is24Hour={false}
                   display='default'
-                  onChange={onChange}
+                  onChange={onChangeStart}
                 />)} 
+                </View>
+                <View style={{backgroundColor:'transparent'}}>
+                <Button title='End Date'  color='#3a5140' onPress={() => showModeEnd('endDate')} />
+                <Text style={{fontSize: 20, color: Colors[colorScheme].filterDateDisplay}}>{textEnd}</Text>
+                {
+                showEnd && (
+                  <DateTimePicker
+                  testID='dateTimePicker2'
+                  value={endDate}
+                  mode={mode}
+                  is24Hour={false}
+                  display='default'
+                  onChange={onChangeEnd}
+                />)} 
+                </View>
+              </View>
+
 
             </View>
             <View style={{flex: 1, backgroundColor: 'transparent', height: '60%', width: '99%', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
-              <IconButton icon="close" style={{backgroundColor: Colors[colorScheme].inputText}} size={30} onPress={() => setModalVisible(!modalVisible)}/>
+              <IconButton icon="check" style={{backgroundColor: 'transparent' }} color='#3a5140'  size={40} onPress={() => onModalPress()}/>
             </View>
           </View>
         </View>
-        
+      </View>
       </Modal>
       <View
         style={{
@@ -239,7 +339,7 @@ const onModalPress =()=> {
                 /> 
       </Pressable>
       
-      {entries.map((entry) => (
+      {filteredEntries.map((entry) => (
         <RenderHistory key={entry.id} trackerType={entry.trackerType} trackerName={entry.trackerName} trackerID={entry.trackerID}
         date={entry.date} checked={entry.checked} scale={entry.scale} input={entry.input}
         color={Colors[colorScheme].itemtext} backgroundColor={Colors[colorScheme].items} dateColor={Colors[colorScheme].date}>
@@ -314,8 +414,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    
     backgroundColor: 'transparent',
+    width: '100%',
+    
+    
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -330,7 +433,7 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 20,
     width: '90%',
-    height: '30%',
+    height: '75%',
     //padding: 20,
     //alignItems: "center",
     shadowColor: "#000",
@@ -343,7 +446,11 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   fixToText:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '60%',
+    
+    //flexDirection: 'column',
+    //justifyContent: 'space-between',
+    //alignContent: 'center',    
+
   },
 });

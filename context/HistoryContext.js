@@ -36,8 +36,8 @@ export const HistoryContextProvider = props => {
 
   //use to search entries
   // add vars that need to be passed 
-  const searchEntries = () =>  {
-    return historyDatabase.searchForEntries(setFilteredEntries); 
+  const searchEntries = (searchPhrase) =>  {
+    return historyDatabase.searchForEntries(searchPhrase, setFilteredEntries); 
   }
 
   const removeAllEntries = () =>{

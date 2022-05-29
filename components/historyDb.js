@@ -23,12 +23,46 @@ const getEntries = (setEntriesFunc) => {
 }
 
 //search history - setEntryFunc for useState
-const searchForEntries = (setEntriesFunc) => {
+const searchForEntries = (searchPhraseArray, setEntriesFunc) => {
+  var sql = 'select * from entries where trackerName = (?) '
+  if(searchPhraseArray){
+  
+  if (searchPhraseArray[0] == 0){
+    searchPhraseArray.splice(0, 1); 
+    var count = searchPhraseArray.length; 
+    var i = count; 
+    while (i > 0){
+      if (i != 1){
+        sql += 'or trackerName = (?) '
+      }
+      i = i-1
+    }
+  }
+  else if (searchPhraseArray[0] == 1){
+    searchPhraseArray.splice(0, 1); 
+    sql = 'select * from entries where date between (?) and (?) and (trackerName = (?) '
+    var count = searchPhraseArray.length; 
+    var i = count;
+    while (i > 2){
+      if (i != 3){
+        sql += 'or trackerName = (?) '
+      }
+      else {
+        sql += ')'
+      }
+      i = i-1
+    }
+  }
+  else {
+    sql = 'select * from entries'; 
+    }
+}
+  console.log(sql); 
   db.transaction(
     tx => {
       tx.executeSql(
-        'select * from entries',
-        [],
+        sql,
+        searchPhraseArray,
         (_, { rows: { _array } }) => {
           setEntriesFunc(_array)
         }
