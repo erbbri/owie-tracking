@@ -39,8 +39,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   const { searchEntries } = useContext(HistoryContext); 
 
-  
-
   useEffect(() => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var date = new Date().getDate(); // Current Date
@@ -55,6 +53,11 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   useEffect(() =>{
     checkDate(); 
   })
+
+  useEffect(()=>{
+    var blankArray = []; 
+    searchEntries(blankArray); 
+  }, [])
 
   async function checkDate () {
     var day = String(new Date().getDate()).padStart(2, '0'); 

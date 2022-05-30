@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { dateDatabase } from './components/dateDatabase';
 import { trackerDatabase } from './components/trackerDatabase'; 
+import { HistoryContext } from './context/HistoryContext';
 
 //function checks if date has changed
 //if it has, it changes date saved in database
