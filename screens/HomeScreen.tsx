@@ -16,8 +16,19 @@ import RenderTracker from '../components/RenderTracker';
 import { AntDesign } from '@expo/vector-icons';
 
 import { dateDatabase } from '../components/dateDatabase';
+import { historyDatabase } from '../components/historyDb';
+import { HistoryContext } from '../context/HistoryContext';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      var blankArray = []; 
+      searchEntries(blankArray); 
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   
   const colorScheme = useColorScheme();
   
@@ -25,6 +36,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const { trackers, setDone, refreshTrackers, resetAll } = useContext(TrackersContext);
 
   const [currentDate, setCurrentDate] = useState('');
+
+  const { searchEntries } = useContext(HistoryContext); 
+
+  
 
   useEffect(() => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

@@ -23,7 +23,7 @@ export default function AddScreen(this: any, { navigation }) {
   const colorScheme = useColorScheme();
   const trackersContext = useContext(TrackersContext)
   const notificationsContext = useContext(NotificationsContext)
-  const textBody = 'You have a notification set for this tracker on OwieTracking.'
+  const textBody = 'Time to update owietracking!'
 
   const { trackers, addNewTracker, checkTracker, refreshTrackers} = trackersContext;
   const { sendPushNotification, Notification, registerForPushNotificationsAsync, cancelNotification } = notificationsContext; 

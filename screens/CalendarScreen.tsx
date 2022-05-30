@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, } from 'react';
 import { HistoryContext } from '../context/HistoryContext';
 import RenderHistory from '../components/RenderHistory';
 import { colors } from 'react-native-elements';
@@ -41,6 +41,16 @@ const htmlend = `
 
 
 export default function CalendarScreen({ navigation }: RootTabScreenProps<'Edit'>) {
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      var blankArray = []; 
+      searchEntries(blankArray); 
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   
   const colorScheme = useColorScheme();
 
@@ -182,7 +192,7 @@ const onModalPress =()=> {
 
   const onPressPrint =()=>{
     var htmlMiddle, htmlComplete; 
-    htmlMiddle = GenerateHTML(entries);
+    htmlMiddle = GenerateHTML(filteredEntries);
     //removes 'undefined' which is for some reason there
     if(htmlMiddle){
     htmlMiddle = htmlMiddle.slice(9); 
@@ -204,11 +214,6 @@ const onModalPress =()=> {
     while(trackers.length >= checkedState.length){
       checkedState.push('checked'); 
     }
-
-    useEffect(()=> {
-      var blankArray = []; 
-      searchEntries(blankArray); 
-    }, []);
 
   return (
     <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
@@ -279,7 +284,7 @@ const onModalPress =()=> {
                   mode={mode}
                   is24Hour={false}
                   display='default'
-                  
+                  maximumDate={new Date()}
                   onChange={onChangeEnd}
                 />)} 
                 </View>

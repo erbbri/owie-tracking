@@ -1,5 +1,5 @@
 import { StyleSheet, SafeAreaView, Platform, Image, StatusBar, Button, Pressable, Modal, ScrollView} from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -14,11 +14,24 @@ import { colors } from 'react-native-elements';
 import { TrackersContext } from '../context/TrackersContext';
 import EditTracker from '../components/EditTracker';
 
+import { HistoryContext } from '../context/HistoryContext';
+
 export default function EditScreen({ navigation }: RootTabScreenProps<'Edit'>) {
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e) => {
+      var blankArray = []; 
+      searchEntries(blankArray); 
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const colorScheme = useColorScheme();
 
   //use context
   const { trackers, removeTracker, refreshTrackers } = useContext(TrackersContext);
+  const { searchEntries } = useContext(HistoryContext); 
 
   const remove =(trackerName)=> {
     console.log('refreshing trackers'); 

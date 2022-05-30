@@ -100,7 +100,7 @@ const sendPushNotification = async (trackerName,
   const id = Notifications.scheduleNotificationAsync({
     content: {
       title: '🔔 ' + trackerName + ' 🔔',
-      body: bodySlot + time.getHours() + ':' + time.getMinutes(),
+      body: bodySlot,
     },
     trigger: {
       hour: hours,
